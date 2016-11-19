@@ -1,0 +1,27 @@
+group 'com.shepard.multi'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral(url: "http://maven.aliyun.com/nexus/content/groups/public/?spm=0.0.0.0.ZW7dWs")
+}
+
+dependencies {
+    compile group: 'com.zaxxer', name: 'HikariCP', version: '2.5.1'
+
+    compile group: 'org.mybatis', name: 'mybatis', version: '3.4.1'
+    compile(
+            'org.springframework:spring-context:4.2.7.RELEASE',
+            'org.springframework:spring-web:4.2.7.RELEASE',
+            'org.springframework:spring-webmvc:4.2.7.RELEASE',
+            'org.springframework:spring-aop:4.2.7.RELEASE',
+    )
+    testCompile(
+            'org.springframework:spring-test:4.2.7.RELEASE',
+            'junit:junit:4.11'
+    )
+}

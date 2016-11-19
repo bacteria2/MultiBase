@@ -1,0 +1,5 @@
+rootProject.name = 'base'
+include 'common'
+include 'view'
+include 'dataCenter'
+
