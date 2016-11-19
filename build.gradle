@@ -1,27 +1,53 @@
-group 'com.shepard.multi'
-version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
-apply plugin: 'war'
 
-sourceCompatibility = 1.5
+//全部项目配置
+allprojects {
+    //java工程信息
+    group 'com.shepard.multi'
+    version '1.0-SNAPSHOT'
+    apply plugin: 'java'
+    //apply plugin: 'war'
 
-repositories {
-    mavenCentral(url: "http://maven.aliyun.com/nexus/content/groups/public/?spm=0.0.0.0.ZW7dWs")
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+    repositories {
+        mavenCentral(url: "http://maven.aliyun.com/nexus/content/groups/public/?spm=0.0.0.0.ZW7dWs")
+    }
+
+    apply from:"libraries.gradle"
+
+    dependencies {
+        compile(
+                'com.zaxxer:HikariCP:2.5.1'
+        )
+    }
+
+
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    task hello << {task -> println "I'm $task.project.name" }
 }
 
-dependencies {
-    compile group: 'com.zaxxer', name: 'HikariCP', version: '2.5.1'
 
-    compile group: 'org.mybatis', name: 'mybatis', version: '3.4.1'
-    compile(
-            'org.springframework:spring-context:4.2.7.RELEASE',
-            'org.springframework:spring-web:4.2.7.RELEASE',
-            'org.springframework:spring-webmvc:4.2.7.RELEASE',
-            'org.springframework:spring-aop:4.2.7.RELEASE',
-    )
-    testCompile(
-            'org.springframework:spring-test:4.2.7.RELEASE',
-            'junit:junit:4.11'
-    )
+//子项目配置
+subprojects {
+    hello << {println "- I am the sub project of A"}
+}
+
+//具体某个项目配置
+project(':dataCenter').hello << {
+    println "- I'm the common component and provide service for other parts."
+}
+
+task lib <<{
+    println libraries.dependencies
+}
+
+task helloWorld  {
+    doLast {
+        def a="a"+[1,2,3]
+        println "Hello World!"
+        println a
+    }
 }

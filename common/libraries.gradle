@@ -1,0 +1,13 @@
+apply from:rootProject.getRootDir().getAbsolutePath()+"/libraries.gradle"
+
+ext {
+    /*slf4jVersion = '1.7.7'
+    springVersion = '4.2.7.RELEASE'*/
+}
+
+dependencies {
+
+    testCompile(
+            // "org.springframework:spring-test:${springVersion}"7
+    )
+}
