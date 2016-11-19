@@ -1,5 +1,5 @@
-rootProject.name = 'base'
+//rootProject.name = 'base'
 include 'common'
-include 'view'
 include 'dataCenter'
+include 'web-admin'
 
