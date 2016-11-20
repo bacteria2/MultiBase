@@ -1,16 +1,20 @@
 apply from: rootProject.getRootDir().getAbsolutePath() + "/libraries.gradle"
 
 ext {
-
+jacksonVersion="2.8.5";
 }
 dependencies {
 
     compile project(":common")
    // providedRuntime 'javax.servlet:jsp-api:2.0'
     compile(
-            'com.zaxxer:HikariCP:2.5.1'
+            "com.zaxxer:HikariCP:2.5.1",
+            "org.codehaus.jackson:jackson-core-asl:1.9.13",
+            "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+           "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+           "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
     )
-    providedCompile "javax.servlet:servlet-api:2.5"
+    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }
 
 
