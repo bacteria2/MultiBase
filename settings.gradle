@@ -1,4 +1,4 @@
-//rootProject.name = 'base'
+rootProject.name = 'base'
 include 'common'
 include 'dataCenter'
 include 'web-admin'

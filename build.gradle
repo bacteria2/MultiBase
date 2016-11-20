@@ -1,10 +1,14 @@
-//全部项目配置
-allprojects {
+//具体某个项目配置
+project(':web-admin'){
+    apply plugin: 'war'
+}
+
+//子项目配置
+subprojects {
     //java工程信息
     group 'com.shepard.multi'
     version '1.0-SNAPSHOT'
     apply plugin: 'java'
-
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
     //制定maven仓库
     repositories {
@@ -12,33 +16,24 @@ allprojects {
     }
     //制定依赖脚本
     apply from:"libraries.gradle"
-
-
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
-
-    task hello << {task -> println "I'm $task.project.name" }
 }
 
+//全部项目配置
+allprojects {
 
-//子项目配置
-subprojects {
-    hello << {println "- I am the sub project of A"}
 }
 
-//具体某个项目配置
-project(':dataCenter').hello << {
-    println "- I'm the common component and provide service for other parts."
-}
+apply plugin: 'distribution'
 
-task lib <<{
-    println libraries.dependencies
-}
-
-task helloWorld  {
-    doLast {
-        def a="a"+[1,2,3]
-        println "Hello World!"
-        println a
+version = '1.2'
+distributions {
+    custom {}
+    main {
+        baseName = 'demo'
+        contents {
+            from { 'view' }
+        }
     }
 }
