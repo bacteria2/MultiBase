@@ -1,8 +1,1 @@
-
-
-task copyView(type: Copy) {
-    from '../view/'
-    into '/src/main/webapp'
-
-}
-
+apply plugin: 'war'

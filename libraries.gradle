@@ -15,6 +15,7 @@ dependencies {
             "org.springframework:spring-webmvc:${springVersion}",
             "org.springframework:spring-aop:${springVersion}",
             "org.codehaus.jackson:jackson-core-asl:1.9.13"
+
     )
     testCompile(
             "org.springframework:spring-test:${springVersion}",

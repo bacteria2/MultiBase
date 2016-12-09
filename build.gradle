@@ -19,21 +19,3 @@ subprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 }
-
-//全部项目配置
-allprojects {
-
-}
-
-apply plugin: 'distribution'
-
-version = '1.2'
-distributions {
-    custom {}
-    main {
-        baseName = 'demo'
-        contents {
-            from { 'view' }
-        }
-    }
-}

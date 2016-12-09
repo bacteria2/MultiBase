@@ -3,9 +3,7 @@ package com.shepard.config;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.*;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -26,8 +24,9 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(value = "com.shepard",
-        includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,value = RestController.class)})
+@ComponentScan(value = "com.shepard"
+       /* ,includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,value = RestController.class)}*/)
+@ImportResource(locations = "classpath*:application.xml")
 public class MvcConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
