@@ -7,9 +7,8 @@ ext {
 dependencies {
 
     compile project(":common")
-    // providedRuntime 'javax.servlet:jsp-api:2.0'
+    compile project(":data-integration")
     compile(
-            "com.zaxxer:HikariCP:2.5.1",
             "org.codehaus.jackson:jackson-core-asl:1.9.13",
             "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
             "org.yaml:snakeyaml:1.17",
@@ -17,8 +16,7 @@ dependencies {
             "org.apache.shiro:shiro-spring:${shiroVersion}",
             "org.apache.shiro:shiro-quartz:${shiroVersion}",
             "dom4j:dom4j:1.6.1",
-            "org.jsoup:jsoup:1.9.2"
-
+            "org.jsoup:jsoup:1.9.2",
     )
     providedCompile "javax.servlet:javax.servlet-api:3.1.0"
 }

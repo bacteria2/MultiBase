@@ -3,19 +3,18 @@ ext {
     springVersion = '4.2.7.RELEASE'
     logbackVersion="1.1.7"
     guavaVersion="20.0"
-    mysqlConnectVersion="5.1.35"
+
 }
 
 dependencies {
     compile(
-            "mysql:mysql-connector-java:${mysqlConnectVersion}",
+
             "org.slf4j:jcl-over-slf4j:${slf4jVersion}",
             "com.google.guava:guava:${guavaVersion}",
             "ch.qos.logback:logback-classic:${logbackVersion}",
             "org.springframework:spring-webmvc:${springVersion}",
             "org.springframework:spring-aop:${springVersion}",
             "org.springframework:spring-jdbc:${springVersion}",
-            "org.codehaus.jackson:jackson-core-asl:1.9.13",
             "com.google.guava:guava:21.0"
     )
     testCompile(
