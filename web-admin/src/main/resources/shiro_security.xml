@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 8 shiro权限配置 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 缓存管理 -->
+
+    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
+
+    <!--
+      使用自定义的Realm类
+      指定密码匹配所需要用到的加密对象
+      指定存储用户、角色、权限许可的数据源及相关查询语句
+     -->
+    <bean id="ydpRealm" class="com.shepard.shiro.ShiroRealm">
+    </bean>
+
+    <!-- 会话验证调度器 -->
+    <bean id="sessionValidationScheduler"
+          class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">
+        <property name="sessionValidationInterval" value="1800000"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+    <!-- 会话Cookie模板 -->
+
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="sid"/>
+        <property name="httpOnly" value="true"/>
+        <!-- 设置为1则表示关闭浏览器即失效 -->
+        <property name="maxAge" value="-1"/>
+    </bean>
+    <!-- 记住我cookie，表示下次登陆还能记住你是谁 -->
+    <!--
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="rememberMe"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="2592000"/>
+    </bean>
+    -->
+    <!-- rememberMe管理器，cipherKey是加密rememberMe Cookie的密钥；默认AES算法； -->
+    <!--
+    <bean id="rememberMeManager"
+    class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cipherKey" value="
+    #{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}"/>
+         <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+    -->
+
+    <!-- 会话管理器 -->
+    <bean id="sessionManager"
+          class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!-- 一小时后session超时 -->
+        <property name="globalSessionTimeout" value="3600000"/>
+        <property name="deleteInvalidSessions" value="true"/>
+        <property name="sessionValidationSchedulerEnabled" value="true"/>
+        <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        <property name="sessionDAO" ref="${shiro.session.dao}"/>
+        <property name="sessionIdCookieEnabled" value="true"/>
+        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        <!--
+        <property name="rememberMeManager" ref="rememberMeManager"/>
+        -->
+    </bean>
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="ydpRealm"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+
+
+
+    <!-- CAS认证过滤器 -->
+    <!--
+    <bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
+        <property name="failureUrl" value="/login"/>
+    </bean>
+    -->
+
+    <!--
+       开启Shiro的注解(如@RequiresRoles，@RequiresPermissions)，需借助SpringAOP扫描使用Shiro注解的类，
+       并在必要时进行安全逻辑验证
+    -->
+    <bean
+            class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+    <bean
+            class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!-- 8 shiro权限配置结束 -->
+</beans>

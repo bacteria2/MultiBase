@@ -10,6 +10,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.mvc.Controller;
 
@@ -25,21 +26,29 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @ComponentScan(value = "com.shepard"
-       /* ,includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,value = RestController.class)}*/)
-@ImportResource(locations = "classpath*:application.xml")
+       ,includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,value = RestController.class)})
+
 public class MvcConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
+
+
     private ApplicationContext applicationContext;
 
-    // equals: <mvc:default-servlet-handler/>
+
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters){
         converters.add(jacksonMessageConvert());
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**").addResourceLocations("/asset/");
+        super.addResourceHandlers(registry);
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
