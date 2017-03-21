@@ -1,4 +1,4 @@
-package com.shepard.shiro;
+package com.multi.shiro;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -8,7 +8,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
 /**
- * @author shepard.xia
+ * @author multi.xia
  * @date 2016年12月13日
  * @description input useage
  */

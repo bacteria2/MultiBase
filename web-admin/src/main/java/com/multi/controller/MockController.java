@@ -1,19 +1,15 @@
-package com.shepard.controller;
+package com.multi.controller;
 
 import com.google.common.io.ByteSource;
-import com.shepard.service.MockType;
-import com.sun.deploy.net.HttpResponse;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
+import com.multi.service.MockType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author shepard.xia
+ * @author multi.xia
  * @date 2017年02月13日
  * @description input useage
  */

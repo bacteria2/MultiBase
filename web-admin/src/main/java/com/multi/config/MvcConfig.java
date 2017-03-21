@@ -1,4 +1,4 @@
-package com.shepard.config;
+package com.multi.config;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -12,7 +12,6 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.mvc.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(value = "com.shepard"
+@ComponentScan(value = "com.multi"
        ,includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION,value = RestController.class)})
 
 public class MvcConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {

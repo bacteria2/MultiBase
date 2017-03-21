@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,12 +27,12 @@ import java.util.Properties;
  * @description input useage
  */
 @Configuration
-@EnableTransactionManagement
+
 //@PropertySource("db.properties")
 public class MybatisConfiguration {
 
     @Autowired
-    @Qualifier("propertiesFactoryBean")
+    @Qualifier("propertiesFactory")
     private Properties dbEnvironment;
 
     @Value("${dataSource.url}")
@@ -60,5 +61,7 @@ public class MybatisConfiguration {
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory){
         return new SqlSessionTemplate(sqlSessionFactory);
     }
+
+
 
 }

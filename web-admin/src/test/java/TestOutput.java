@@ -1,27 +1,20 @@
-import com.google.common.io.Files;
-import com.shepard.MultiDemoWebInitializer;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import com.multi.MultiDemoWebInitializer;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
 /**
- * @author shepard.xia
+ * @author multi.xia
  * @date 2017年02月13日
  * @description input useage
  */
 public class TestOutput {
-    @Test
+
     public void testOutput() {
 
             //Document doc = DocumentHelper.parseText(Files.asCharSource(Paths.get("src/test/resources/mockData/single.xml").toFile(), Charset.forName("UTF-8")).read());
@@ -50,7 +43,7 @@ public class TestOutput {
         ;
     }
 
-    @Test
+
     public void test() throws URISyntaxException {
         Path path=Paths.get(MultiDemoWebInitializer.class.getResource("../shiro").toURI());
         System.out.println(path);

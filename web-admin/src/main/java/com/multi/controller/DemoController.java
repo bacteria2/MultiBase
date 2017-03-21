@@ -1,11 +1,6 @@
-package com.shepard.controller;
+package com.multi.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.shepard.service.MockType;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.springframework.cglib.beans.ImmutableBean;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

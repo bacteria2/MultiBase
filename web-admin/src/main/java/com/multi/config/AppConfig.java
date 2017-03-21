@@ -1,8 +1,7 @@
-package com.shepard.config;
+package com.multi.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -20,7 +19,7 @@ import java.util.Properties;
  */
 
 @Configuration
-@ComponentScan(basePackages = {"com.shepard"},
+@ComponentScan(basePackages = {"com.multi"},
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)})
 @ImportResource(locations = "classpath*:application.xml")
 public class AppConfig {

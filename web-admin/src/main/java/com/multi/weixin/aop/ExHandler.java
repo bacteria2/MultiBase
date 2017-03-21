@@ -1,17 +1,14 @@
-package com.shepard.weixin.aop;
+package com.multi.weixin.aop;
 
-import org.springframework.expression.ExpressionException;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author shepard.xia
+ * @author multi.xia
  * @date 2016年12月09日
  * @description input useage
  */
-@ControllerAdvice(basePackages = "com.shepard.weixin" )
+@ControllerAdvice(basePackages = "com.multi.weixin" )
 public class ExHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody

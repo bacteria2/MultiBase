@@ -1,7 +1,7 @@
-package com.shepard.service;
+package com.multi.service;
 
 /**
- * @author shepard.xia
+ * @author multi.xia
  * @date 2017年02月13日
  * @description input useage
  */

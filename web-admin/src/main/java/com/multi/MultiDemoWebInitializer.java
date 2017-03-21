@@ -1,20 +1,23 @@
-package com.shepard;
+package com.multi;
 
-import com.shepard.config.AppConfig;
-import com.shepard.config.MvcConfig;
+import com.multi.config.AppConfig;
+import com.multi.config.MvcConfig;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 
 /**
  * @decription 代替web.xml配置servlet
  * Created by IonCannon on 2016/11/20.
  */
+
+//@WebInitParam(name="spring.profile.active",value="production")
 public class MultiDemoWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer  {
 
     @Override
@@ -34,6 +37,13 @@ public class MultiDemoWebInitializer extends AbstractAnnotationConfigDispatcherS
     }
 
     @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+        //设置spring启动的环境变量
+       // servletContext.setInitParameter("spring.profiles.active","production");
+    }
+
+    @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{AppConfig.class};
     }
@@ -42,8 +52,6 @@ public class MultiDemoWebInitializer extends AbstractAnnotationConfigDispatcherS
     protected Class<?>[] getServletConfigClasses() {
         return new Class<?>[]{MvcConfig.class};
     }
-
-
 
     @Override
     protected String[] getServletMappings() {

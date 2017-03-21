@@ -1,26 +1,14 @@
-package com.shepard.service;
+package com.multi.service;
 
-import com.google.common.base.Utf8;
 import com.google.common.io.ByteSource;
-import com.google.common.io.CharSource;
 import com.google.common.io.Files;
-import com.sun.xml.internal.stream.writers.XMLOutputSource;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.io.XMLWriter;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 /**
- * @author shepard.xia
+ * @author multi.xia
  * @date 2017年02月13日
  * @description input useage
  */

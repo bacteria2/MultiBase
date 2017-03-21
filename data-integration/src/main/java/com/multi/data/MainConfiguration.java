@@ -1,5 +1,8 @@
 package com.multi.data;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,6 +23,7 @@ import java.util.Properties;
  */
 @Configuration
 @ComponentScan
+@MapperScan(basePackages = "com.multi.data.dao")
 public class MainConfiguration {
 
     @Bean
@@ -30,8 +34,7 @@ public class MainConfiguration {
     /**
      * 注入属性for development
      * */
-    @Bean(name="propertiesFactoryBean")
-    @Profile("development")
+    @Bean(name="propertiesFactory")
     public PropertiesFactoryBean devPropertiesFactoryBean(PathMatchingResourcePatternResolver resolver) throws IOException {
         PropertiesFactoryBean propertiesFactoryBean=new PropertiesFactoryBean();
         propertiesFactoryBean.setLocations(
@@ -43,7 +46,7 @@ public class MainConfiguration {
     /**
      * 注入属性for production
      * */
-    @Bean(name="propertiesFactoryBean")
+    @Bean(name="propertiesFactory")
     @Profile("production")
     public PropertiesFactoryBean prodPropertiesFactoryBean(PathMatchingResourcePatternResolver resolver) throws IOException {
         PropertiesFactoryBean propertiesFactoryBean=new PropertiesFactoryBean();
@@ -62,4 +65,6 @@ public class MainConfiguration {
         configurer.setProperties(factoryBean.getObject());
         return configurer;
     }
+
+
 }

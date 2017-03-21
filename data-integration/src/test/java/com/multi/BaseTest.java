@@ -22,7 +22,7 @@ import javax.sql.DataSource;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={MainConfiguration.class})
-@ActiveProfiles("production")
+@ActiveProfiles("development")
 public class BaseTest extends AbstractJUnit4SpringContextTests {
 
     @Autowired
@@ -30,7 +30,7 @@ public class BaseTest extends AbstractJUnit4SpringContextTests {
     @Autowired
     SqlSessionFactory sessionFactory;
 
-    @Test
+    /*@Test
     public void dataSourceTest(){
         System.out.println(url);
     }
@@ -38,5 +38,5 @@ public class BaseTest extends AbstractJUnit4SpringContextTests {
     @Test
     public void sessionFactoryTest(){
         System.out.println(sessionFactory);
-    }
+    }*/
 }
