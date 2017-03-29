@@ -3,4 +3,6 @@ include 'common'
 include 'web-admin'
 include 'data-integration'
 include 'authorization'
+include 'message-center'
+include 'unit-test'
 

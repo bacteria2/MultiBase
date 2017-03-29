@@ -1,0 +1,17 @@
+ext {
+    kafkaVersion = '0.10.2.0'
+}
+
+dependencies {
+    compile project(":common")
+    compile(
+            "org.apache.kafka:kafka-clients:${kafkaVersion}"
+    )
+}
+
+
+
+
+
+
+

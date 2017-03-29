@@ -4,4 +4,8 @@
 /.idea/
 /.gradle/
 /dataCenter/build/
-/gradle/
+
+
+/common/build/
+/data-integration/build/
+/web-admin/build/

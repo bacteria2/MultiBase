@@ -1,7 +1,9 @@
 package com.multi.data.conf;
 
+import com.github.pagehelper.PageInterceptor;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,13 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -27,18 +26,20 @@ import java.util.Properties;
  * @description input useage
  */
 @Configuration
-
-//@PropertySource("db.properties")
+@MapperScan(basePackages = "com.multi.data.dao")
 public class MybatisConfiguration {
 
     @Autowired
     @Qualifier("propertiesFactory")
     private Properties dbEnvironment;
 
-    @Value("${dataSource.url}")
-    private String a;
+    @Value("${page.helperDialect}")
+    private String helperDialect;
+    @Value("${page.offsetAsPageNum}")
+    private String offsetAsPageNum;
 
-    @Bean
+
+    @Bean(name = "dataSource")
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName(dbEnvironment.getProperty("dataSource.className"));
@@ -48,12 +49,24 @@ public class MybatisConfiguration {
         config.setMaximumPoolSize(Integer.valueOf(dbEnvironment.getProperty("dataSource.maximumPoolSize")));
         return new HikariDataSource(config);
     }
+    @Bean
+    public PageInterceptor pageInterceptor(){
+        PageInterceptor interceptor=  new PageInterceptor();
+        Properties props=new Properties();
+        props.setProperty("helperDialect",helperDialect);
+        props.setProperty("offsetAsPageNum",offsetAsPageNum);
+        interceptor.setProperties(props);
+        return interceptor;
+    }
 
     @Bean
-    public SqlSessionFactory sessionFactoryBean(DataSource dataSource,PathMatchingResourcePatternResolver resolver ) throws Exception {
+    public SqlSessionFactory sessionFactoryBean(DataSource dataSource,PathMatchingResourcePatternResolver resolver,PageInterceptor interceptor ) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean= new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
-        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:/mapper/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:/session/*.xml"));
+        sqlSessionFactoryBean.setPlugins(new Interceptor[]{
+                interceptor
+        });
         return  sqlSessionFactoryBean.getObject();
     }
 

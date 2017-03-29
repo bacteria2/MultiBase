@@ -12,6 +12,7 @@ subprojects {
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
     //制定maven仓库
     repositories {
+        mavenCentral(url: "http://maven.aliyun.com/nexus/content/repositories/central/?spm=0.0.0.0.5QTado")
         mavenCentral(url: "http://maven.aliyun.com/nexus/content/groups/public/?spm=0.0.0.0.ZW7dWs")
     }
     //制定依赖脚本

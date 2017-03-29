@@ -12,9 +12,6 @@ dependencies {
             "org.codehaus.jackson:jackson-core-asl:1.9.13",
             "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
             "org.yaml:snakeyaml:1.17",
-            "org.apache.shiro:shiro-web:${shiroVersion}",
-            "org.apache.shiro:shiro-spring:${shiroVersion}",
-            "org.apache.shiro:shiro-quartz:${shiroVersion}",
             "dom4j:dom4j:1.6.1",
             "org.jsoup:jsoup:1.9.2",
     )

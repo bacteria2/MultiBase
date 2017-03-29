@@ -7,7 +7,7 @@
     <!-- 缓存管理 -->
     <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
 
-    <bean id="ydpRealm" class="com.multi.shiro.ShiroRealm"/>
+    <bean id="ydpRealm" class="com.multi.webadmin.shiro.ShiroRealm"/>
 
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">

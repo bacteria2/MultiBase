@@ -58,7 +58,7 @@
             <property name="rootInterface" value="com.ys.ydp.base.db.IBaseDAO"/>-->
         </javaClientGenerator>
 
-        <table tableName="multi_user" enableSelectByExample="false" enableUpdateByExample="false"
+        <table tableName="u_user" enableSelectByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableCountByExample="false">
             <property name="useActualColumnNames" value="false" />
             <!--<property name="rootInterface" value="com.ys.ydp.base.db.IBaseDAO"/>-->
@@ -81,8 +81,8 @@
 
                   identity: 自增主键  If true, then the column is flagged as an identity column and the generated <selectKey> element will be placed after the insert (for an identity column). If false, then the generated <selectKey> will be placed before the insert (typically for a sequence).
 
--->
-            <generatedKey column="id" sqlStatement="MySql" />
+
+            <generatedKey column="id" sqlStatement="MySql" />-->
             <!-- optional.
                     列的命名规则：
                     MBG使用 <columnRenamingRule> 元素在计算列名的对应 名称之前，先对列名进行重命名
@@ -107,6 +107,14 @@
  typeHandler:
 
             <columnOverride column="" javaType="" jdbcType="" typeHandler="" delimitedColumnName=""/> -->
+        </table>
+        <table tableName="u_role" enableSelectByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableCountByExample="false">
+            <property name="useActualColumnNames" value="false" />
+        </table>
+        <table tableName="u_permission" enableSelectByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableCountByExample="false">
+            <property name="useActualColumnNames" value="false" />
         </table>
 
     </context>

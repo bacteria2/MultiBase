@@ -1,7 +1,6 @@
-import com.multi.MultiDemoWebInitializer;
+import com.multi.webadmin.MultiDemoWebInitializer;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
-import org.junit.Test;
 
 import java.net.URISyntaxException;
 import java.nio.file.Path;
