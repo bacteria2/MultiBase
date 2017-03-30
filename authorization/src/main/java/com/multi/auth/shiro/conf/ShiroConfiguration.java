@@ -76,7 +76,6 @@ public class ShiroConfiguration {
     }
 
     @Bean(name="customSessionDAO")
-
     public CustomSessionDAO customSessionDAO(){
         return new CustomSessionDAO();
     }
@@ -146,7 +145,7 @@ public class ShiroConfiguration {
         factoryBean.setSecurityManager(manager);
         ClassPathResource resource=new ClassPathResource("shiro_filter_chain",this.getClass().getClassLoader());
         factoryBean.setFilterChainDefinitions(Files.toString(resource.getFile(), StandardCharsets.UTF_8));
-        factoryBean.setLoginUrl("/login");
+        factoryBean.setLoginUrl("/asset/login.html");
         return factoryBean;
     }
 }

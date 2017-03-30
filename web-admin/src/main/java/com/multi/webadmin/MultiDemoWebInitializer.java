@@ -37,7 +37,7 @@ public class MultiDemoWebInitializer extends AbstractAnnotationConfigDispatcherS
         encodingFilter.addMappingForUrlPatterns(null, false, "/*");
 
         FilterRegistration.Dynamic shiroFilter = servletContext.addFilter("shiroFilter", DelegatingFilterProxy.class);
-        shiroFilter.addMappingForUrlPatterns(null, false, "");
+        shiroFilter.addMappingForUrlPatterns(null, false, "/*");
     }
 
     @Override

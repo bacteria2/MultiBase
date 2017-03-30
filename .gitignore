@@ -9,3 +9,5 @@
 /common/build/
 /data-integration/build/
 /web-admin/build/
+/unit-test/build/
+/authorization/build/
