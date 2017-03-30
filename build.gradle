@@ -6,7 +6,7 @@ project(':web-admin'){
 //子项目配置
 subprojects {
     //java工程信息
-    group 'com.multi.multi'
+    group 'com.multi'
     version '1.0-SNAPSHOT'
     apply plugin: 'java'
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'

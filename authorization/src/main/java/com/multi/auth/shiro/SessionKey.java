@@ -15,6 +15,6 @@ public enum SessionKey {
     }
 
     public String getKey(String... key){
-        return String.format(keyPrefix,key);
+        return String.format(keyPrefix, (Object[]) key);
     }
 }

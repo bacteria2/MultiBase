@@ -18,7 +18,7 @@ public class ShiroRepositoryCondition implements Condition {
     @Override
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
         if(context.getEnvironment()!=null){
-            String type= Optional.ofNullable(context.getEnvironment().getProperty("shiro.repository.type")).orElse("ehCache                            ");
+            String type= Optional.ofNullable(context.getEnvironment().getProperty("shiro.repository.type")).orElse("redis");
             Map<String,Object> attr = metadata.getAnnotationAttributes(SessionRepoType.class.getName());
             if (attr!=null){
                 RepoType repo=(RepoType)attr.get("value");

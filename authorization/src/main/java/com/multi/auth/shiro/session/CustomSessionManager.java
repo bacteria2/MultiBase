@@ -3,7 +3,7 @@ package com.multi.auth.shiro.session;
 import com.multi.auth.shiro.CustomSessionDAO;
 import com.multi.common.util.StringUtils;
 import com.multi.data.model.UUser;
-import com.multi.data.model.bo.UserOnlineBo;
+import com.multi.auth.shiro.bo.UserOnlineBo;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;
@@ -26,12 +26,12 @@ public class CustomSessionManager {
     /**
      * session status
      */
-    public static final String SESSION_STATUS ="sojson-online-status";
+    public static final String SESSION_STATUS ="multi-online-status";
     @Autowired
-    ISessionRepository shiroSessionRepository;
+    ISessionRepository sessionRepository;
 
     @Autowired
-    CustomSessionDAO customShiroSessionDAO;
+    CustomSessionDAO customSessionDAO;
 
     /**
      * 获取所有的有效Session用户
@@ -39,8 +39,8 @@ public class CustomSessionManager {
      */
     public List<UserOnlineBo> getAllUser() {
         //获取所有session
-        Collection<Session> sessions = customShiroSessionDAO.getActiveSessions();
-        List<UserOnlineBo> list = new ArrayList<UserOnlineBo>();
+        Collection<Session> sessions = customSessionDAO.getActiveSessions();
+        List<UserOnlineBo> list = new ArrayList<>();
 
         for (Session session : sessions) {
             UserOnlineBo bo = getSessionBo(session);
@@ -58,11 +58,11 @@ public class CustomSessionManager {
     @SuppressWarnings("unchecked")
     public List<SimplePrincipalCollection> getSimplePrincipalCollectionByUserId(Long...userIds){
         //把userIds 转成Set，好判断
-        Set<Long> idset = (Set<Long>) StringUtils.array2Set(userIds);
+        Set<Long> idset = (Set<Long>) StringUtils.array2Set((Object[]) userIds);
         //获取所有session
-        Collection<Session> sessions = customShiroSessionDAO.getActiveSessions();
+        Collection<Session> sessions = customSessionDAO.getActiveSessions();
         //定义返回
-        List<SimplePrincipalCollection> list = new ArrayList<SimplePrincipalCollection>();
+        List<SimplePrincipalCollection> list = new ArrayList<>();
         for (Session session : sessions) {
             //获取SimplePrincipalCollection
             Object obj = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
@@ -91,7 +91,7 @@ public class CustomSessionManager {
      * @return
      */
     public UserOnlineBo getSession(String sessionId) {
-        Session session = shiroSessionRepository.getSession(sessionId);
+        Session session = sessionRepository.getSession(sessionId);
         UserOnlineBo bo = getSessionBo(session);
         return bo;
     }
@@ -144,20 +144,21 @@ public class CustomSessionManager {
      */
     public Map<String, Object> changeSessionStatus(Boolean status,
                                                    String sessionIds) {
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String,Object> map = new HashMap<>();
+
         try {
-            String[] sessionIdArray = null;
+            String[] sessionIdArray;
             if(sessionIds.indexOf(",") ==-1){
                 sessionIdArray = new String[]{sessionIds};
             }else{
                 sessionIdArray = sessionIds.split(",");
             }
             for (String id : sessionIdArray) {
-                Session session = shiroSessionRepository.getSession(id);
+                Session session = sessionRepository.getSession(id);
                 SessionStatus sessionStatus = new SessionStatus();
                 sessionStatus.setOnlineStatus(status);
                 session.setAttribute(SESSION_STATUS, sessionStatus);
-                customShiroSessionDAO.update(session);
+                customSessionDAO.update(session);
             }
             map.put("status", 200);
             map.put("sessionStatus", status?1:0);
@@ -182,24 +183,24 @@ public class CustomSessionManager {
             //匹配用户ID
             if(userId.equals(id)){
                 //获取用户Session
-                Session session = shiroSessionRepository.getSession(bo.getSessionId());
+                Session session = sessionRepository.getSession(bo.getSessionId());
                 //标记用户Session
                 SessionStatus sessionStatus = (SessionStatus) session.getAttribute(SESSION_STATUS);
                 //是否踢出 true:有效，false：踢出。
                 sessionStatus.setOnlineStatus(status.intValue() == 1);
                 //更新Session
-                customShiroSessionDAO.update(session);
+                customSessionDAO.update(session);
             }
         }
     }
 
 
-    public void setShiroSessionRepository(
-            ISessionRepository shiroSessionRepository) {
-        this.shiroSessionRepository = shiroSessionRepository;
+    public void setSessionRepository(
+            ISessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
     }
 
-    public void setCustomShiroSessionDAO(CustomSessionDAO customShiroSessionDAO) {
-        this.customShiroSessionDAO = customShiroSessionDAO;
+    public void setCustomSessionDAO(CustomSessionDAO customSessionDAO) {
+        this.customSessionDAO = customSessionDAO;
     }
 }

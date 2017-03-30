@@ -1,20 +1,15 @@
-package com.multi.data.model.bo;
+package com.multi.auth.shiro.bo;
 
 
 
 import com.multi.data.model.UUser;
-
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Session  + User Bo
- * @author sojson.com
  *
  */
-public class UserOnlineBo extends UUser implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class UserOnlineBo extends UUser {
 	
 	//Session Id
 	private String sessionId;

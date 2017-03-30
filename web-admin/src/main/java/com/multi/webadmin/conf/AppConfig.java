@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  */
 
 @Configuration
-@ComponentScan(basePackages = {"com.multi.webadmin"},
+@ComponentScan(basePackages = {"com.multi"},
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)})
 public class AppConfig {
  /*   @Resource(name = "ymlProperties")

@@ -1,9 +1,12 @@
 package com.multi;
 
 
+import com.multi.common.util.SpringContextUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +23,7 @@ import java.io.IOException;
  */
 @Configuration
 @ComponentScan
-public class MainConfiguration {
+public class MainConfiguration implements ApplicationContextAware {
 
     @Bean
     public PathMatchingResourcePatternResolver resolver() {
@@ -84,4 +87,8 @@ public class MainConfiguration {
     }
 
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        SpringContextUtil.setApplicationContext(applicationContext);
+    }
 }

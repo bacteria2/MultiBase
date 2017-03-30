@@ -1,0 +1,6 @@
+/index/*=kickout,simple,login,permission
+/admin/*=kickout,simple,login,permission
+/test/*=kickout,simple,login,permission
+/js/**=anon
+/css/**=anon
+/**=simple,login

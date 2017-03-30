@@ -1,11 +1,17 @@
 package com.multi.auth.shiro.conf;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.io.Files;
 import com.multi.auth.shiro.CustomSessionDAO;
+import com.multi.auth.shiro.filter.LoginFilter;
+import com.multi.auth.shiro.filter.PermissionFilter;
+import com.multi.auth.shiro.filter.RoleFilter;
+import com.multi.auth.shiro.filter.SimpleAuthFilter;
 import com.multi.auth.shiro.realm.SampleRealm;
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
+
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -13,16 +19,23 @@ import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
 import org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler;
+
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.Cookie;
+import org.apache.shiro.web.servlet.ShiroFilter;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.io.ClassPathResource;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author shepard.xia
@@ -62,13 +75,14 @@ public class ShiroConfiguration {
         return cookie;
     }
 
-    @Bean
-    public SessionDAO customSessionDAO(){
+    @Bean(name="customSessionDAO")
+
+    public CustomSessionDAO customSessionDAO(){
         return new CustomSessionDAO();
     }
 
     @Bean
-    public SessionManager defaultWebSessionManager(CustomSessionDAO dao, @Qualifier("simpleCookie")Cookie sessionIdCookie,CacheManager cacheManager){
+    public SessionManager defaultWebSessionManager(@Qualifier("customSessionDAO")CustomSessionDAO dao, @Qualifier("simpleCookie")Cookie sessionIdCookie,CacheManager cacheManager){
         DefaultWebSessionManager sessionManager=new DefaultWebSessionManager();
 
         //VALIDATOR
@@ -89,7 +103,7 @@ public class ShiroConfiguration {
 
 
     @Bean
-    public CookieRememberMeManager rememberMeManager(@Qualifier("rememberMe")Cookie rememberMe) throws Base64DecodingException {
+    public CookieRememberMeManager rememberMeManager(@Qualifier("rememberMe")Cookie rememberMe){
         CookieRememberMeManager manager = new CookieRememberMeManager();
         manager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
         manager.setCookie(rememberMe);
@@ -119,12 +133,20 @@ public class ShiroConfiguration {
         return securityManager;
     }
 
+    @Bean
+    public LifecycleBeanPostProcessor shiroLifecycleBeanProcessor(){
+        return new LifecycleBeanPostProcessor();
+    }
 
-    @Bean(name = "ShiroFilter")
+
+    @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SessionsSecurityManager manager) throws Exception {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
+        factoryBean.setFilters(ImmutableMap.of("simple",new SimpleAuthFilter(),"login",new LoginFilter(),"role",new RoleFilter(),"permission",new PermissionFilter()));
         factoryBean.setSecurityManager(manager);
-        factoryBean.setLoginUrl("/user/login");
+        ClassPathResource resource=new ClassPathResource("shiro_filter_chain",this.getClass().getClassLoader());
+        factoryBean.setFilterChainDefinitions(Files.toString(resource.getFile(), StandardCharsets.UTF_8));
+        factoryBean.setLoginUrl("/login");
         return factoryBean;
     }
 }

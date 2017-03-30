@@ -1,20 +1,21 @@
 package com.multi.auth.shiro.service;
 
-import com.multi.data.dao.URoleMapper;
 import com.multi.data.model.UUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
+import java.sql.Date;
+import java.time.Instant;
 
 /**
  * @author shepard.xia
  * @date 2017年03月29日
  * @description input useage
  */
-@Service
+
 public interface IUserService {
 
 
-  /*  default public UUser login(){
-        session.selectByPrimaryKey()
-    }*/
+    default public UUser login(String userName, String password) {
+        return new UUser(12345L, "test", "test@email.com", "pwsd",
+                Date.from(Instant.now()), Date.from(Instant.now()), 1L);
+    }
 }
