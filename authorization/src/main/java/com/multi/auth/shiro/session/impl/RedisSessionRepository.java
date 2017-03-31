@@ -9,6 +9,7 @@ import com.multi.auth.shiro.session.SessionStatus;
 import com.multi.auth.shiro.session.condition.RepoType;
 import com.multi.auth.shiro.session.condition.SessionRepoType;
 import com.multi.auth.shiro.session.condition.ShiroRepositoryCondition;
+import com.multi.common.util.SerializeUtil;
 import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,12 +58,12 @@ public class RedisSessionRepository implements ISessionRepository {
             session.setAttribute(CustomSessionManager.SESSION_STATUS, sessionStatus);
         }
 
-        String key = SessionKey.RedisSessionKey.getKey(session.getId().toString());
+        byte[] key = SessionKey.RedisSessionKey.getKey(session.getId().toString()).getBytes();
 
         Long expireTime = session.getTimeout() / 1000 + SESSION_VAL_TIME_SPAN + (5 * 60);
 
         try (Jedis jedis = jedisPool.getResource()) {
-            jedis.set(key, JSON.toJSONString(session));
+            jedis.set(key, SerializeUtil.serialize(session));
             jedis.expire(key, expireTime.intValue());
         }
 
@@ -72,8 +73,7 @@ public class RedisSessionRepository implements ISessionRepository {
     @Override
     public void deleteSession(Serializable sessionId) {
         Preconditions.checkNotNull(sessionId, "sessionId can not be null");
-        String key = SessionKey.RedisSessionKey.getKey(sessionId.toString());
-
+        byte[] key = SessionKey.RedisSessionKey.getKey(sessionId.toString()).getBytes();
         try (Jedis jedis = jedisPool.getResource()) {
             jedis.del(key);
         }
@@ -82,9 +82,9 @@ public class RedisSessionRepository implements ISessionRepository {
     @Override
     public Session getSession(Serializable sessionId) {
         Preconditions.checkNotNull(sessionId, "sessionId can not be null");
-        String key = SessionKey.RedisSessionKey.getKey(sessionId.toString());
+        byte[] key = SessionKey.RedisSessionKey.getKey(sessionId.toString()).getBytes();
         try (Jedis jedis = jedisPool.getResource()) {
-            return JSON.parseObject(jedis.get(key), Session.class);
+            return SerializeUtil.deSerialize(jedis.get(key), Session.class);
         }
 
     }
@@ -96,10 +96,10 @@ public class RedisSessionRepository implements ISessionRepository {
     public Collection<Session> getAllSessions() {
         Set<Session> sessions = new HashSet<>();
         try (Jedis jedis = jedisPool.getResource()) {
-            Set<byte[]> byteKeys = jedis.keys((SessionKey.RedisSessionKey.getKey("")).getBytes());
+            Set<byte[]> byteKeys = jedis.keys((SessionKey.RedisSessionKey.getKey("*")).getBytes());
             if (byteKeys != null && byteKeys.size() > 0) {
                 for (byte[] key : byteKeys) {
-                    Session obj = JSON.parseObject(jedis.get(key), Session.class);
+                    Session obj = SerializeUtil.deSerialize(jedis.get(key), Session.class);
                     sessions.add(obj);
                 }
             }

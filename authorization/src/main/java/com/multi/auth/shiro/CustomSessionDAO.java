@@ -6,6 +6,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.apache.shiro.session.mgt.eis.CachingSessionDAO;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,7 @@ import java.util.Collection;
  * @description redis SessionDAO
  */
 
-public class CustomSessionDAO extends AbstractSessionDAO {
+public class CustomSessionDAO extends EnterpriseCacheSessionDAO {
 
     @Autowired
     ISessionRepository sessionRepository;
@@ -33,16 +34,18 @@ public class CustomSessionDAO extends AbstractSessionDAO {
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
+        Session session = super.doReadSession(sessionId);
+      //  session.getAttributeKeys();
         return sessionRepository.getSession(sessionId);
     }
 
     @Override
-    public void update(Session session) throws UnknownSessionException {
+    public void doUpdate(Session session) throws UnknownSessionException {
         sessionRepository.saveSession(session);
     }
 
     @Override
-    public void delete(Session session) {
+    public void doDelete(Session session) {
         Preconditions.checkNotNull(session,"session can not be null");
         Preconditions.checkNotNull(session.getId(),"session id can not be null");
         sessionRepository.deleteSession(session.getId());

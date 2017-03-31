@@ -55,7 +55,7 @@ public class SampleRealm extends AuthorizingRealm {
         ShiroToken token=(ShiroToken)authToken;
         UUser user = userService.login(token.getUsername(),token.getPswd());
         Preconditions.checkNotNull(user,"error account or password");
-        Preconditions.checkState(UUser._0.equals(user.getStatus()),"account has been terminated");
+        Preconditions.checkState(UUser._1.equals(user.getStatus()),"account has been terminated");
 
         //更新登录时间 last login time
         user.setLastLoginTime(new Date());

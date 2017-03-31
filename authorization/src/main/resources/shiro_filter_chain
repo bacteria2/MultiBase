@@ -3,4 +3,4 @@
 /test/*=kickout,simple,login,permission
 /js/**=anon
 /css/**=anon
-/**=simple,login
+/**=simple

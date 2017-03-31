@@ -1,19 +1,24 @@
 package com.multi.auth.shiro.conf;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.multi.auth.shiro.CustomSessionDAO;
 import com.multi.auth.shiro.filter.LoginFilter;
 import com.multi.auth.shiro.filter.PermissionFilter;
 import com.multi.auth.shiro.filter.RoleFilter;
 import com.multi.auth.shiro.filter.SimpleAuthFilter;
+import com.multi.auth.shiro.listener.CustomSessionListener;
 import com.multi.auth.shiro.realm.SampleRealm;
 
+import com.multi.auth.shiro.session.CustomSessionManager;
+import com.multi.auth.shiro.session.ISessionRepository;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
@@ -36,6 +41,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.ClassPathResource;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 /**
  * @author shepard.xia
@@ -81,7 +87,7 @@ public class ShiroConfiguration {
     }
 
     @Bean
-    public SessionManager defaultWebSessionManager(@Qualifier("customSessionDAO")CustomSessionDAO dao, @Qualifier("simpleCookie")Cookie sessionIdCookie,CacheManager cacheManager){
+    public SessionManager defaultWebSessionManager(SessionListener listener,@Qualifier("customSessionDAO")CustomSessionDAO dao, @Qualifier("simpleCookie")Cookie sessionIdCookie){
         DefaultWebSessionManager sessionManager=new DefaultWebSessionManager();
 
         //VALIDATOR
@@ -89,11 +95,12 @@ public class ShiroConfiguration {
         validationScheduler.setSessionValidationInterval(1800000);
         validationScheduler.setSessionManager(sessionManager);
 
-        sessionManager.setCacheManager(cacheManager);
+       // sessionManager.setCacheManager(cacheManager);
         sessionManager.setSessionValidationInterval(1800000);
         sessionManager.setGlobalSessionTimeout(1800000);
         sessionManager.setSessionIdCookie(sessionIdCookie);
         sessionManager.setSessionDAO(dao);
+        sessionManager.setSessionListeners(Lists.newArrayList(listener));
         sessionManager.setDeleteInvalidSessions(true);
         sessionManager.setSessionValidationSchedulerEnabled(true);
         sessionManager.setSessionValidationScheduler(validationScheduler);
@@ -109,26 +116,35 @@ public class ShiroConfiguration {
         return manager;
     }
 
-    /**
+     /**
      * 使用shiro自带的cacheManger来保存Session
      */
-    @Bean
+  /*  @Bean
     public MemoryConstrainedCacheManager cacheManager() {
         return new MemoryConstrainedCacheManager();
-    }
+    }*/
+
+
+     @Bean
+     public SessionListener customSessionListener(ISessionRepository repository){
+         CustomSessionListener listener=new CustomSessionListener();
+         listener.setShiroSessionRepository(repository);
+         return listener;
+     }
+
 
     @Bean
-    public Realm simpleRealm(){
+    public SampleRealm simpleRealm(){
         return new SampleRealm();
     }
 
     @Bean
-    public SessionsSecurityManager sessionsSecurityManager(Realm realm,SessionManager manager, CookieRememberMeManager rememberMe,CacheManager cacheManager) {
+    public SessionsSecurityManager sessionsSecurityManager(Realm realm,SessionManager manager, CookieRememberMeManager rememberMe) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
         securityManager.setSessionManager(manager);
         securityManager.setRememberMeManager(rememberMe);
-        securityManager.setCacheManager(cacheManager);
+        //securityManager.setCacheManager(cacheManager);
         return securityManager;
     }
 

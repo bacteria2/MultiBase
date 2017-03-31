@@ -8,6 +8,8 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -27,7 +29,7 @@ public class DemoController {
     }
 
     @RequestMapping("/login/submit")
-    public String submitLogin(UUser user, Boolean rememberMe){
+    public String submitLogin(UUser user, Boolean rememberMe, HttpServletRequest request){
         ShiroToken token = new ShiroToken(user.getEmail(), user.getPswd());
         token.setRememberMe(rememberMe);
         SecurityUtils.getSubject().login(token);

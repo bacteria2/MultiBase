@@ -11,6 +11,7 @@ dependencies {
             "org.apache.shiro:shiro-web:${shiroVersion}",
             "org.apache.shiro:shiro-spring:${shiroVersion}",
             "org.apache.shiro:shiro-quartz:${shiroVersion}",
+            "org.apache.shiro:shiro-ehcache:${shiroVersion}",
             "javax.servlet:javax.servlet-api:3.1.0",
             "commons-collections:commons-collections:3.2.2"
 

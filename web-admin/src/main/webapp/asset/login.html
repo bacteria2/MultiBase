@@ -7,8 +7,9 @@
 <body>
 login:
 <form action="/login/submit" method="post" >
-    <label>name:</label><input placeholder="name">
-    <label>password:</label><input type="password">
+    <label>name:</label><input name="email" placeholder="name">
+    <label>password:</label><input name="pswd" type="password">
+    <label>rememberMe:</label><input name="rememberMe" value="true" type="checkbox" >
     <button>OK</button>
 </form>
 </body>
