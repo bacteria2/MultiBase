@@ -52,8 +52,9 @@ public class SampleRealm extends AuthorizingRealm {
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken) throws AuthenticationException {
-        ShiroToken token=(ShiroToken)authToken;
-        UUser user = userService.login(token.getUsername(),token.getPswd());
+
+
+        UUser user = userService.login(authToken.getPrincipal().toString(),authToken.getCredentials().toString());
         Preconditions.checkNotNull(user,"error account or password");
         Preconditions.checkState(UUser._1.equals(user.getStatus()),"account has been terminated");
 

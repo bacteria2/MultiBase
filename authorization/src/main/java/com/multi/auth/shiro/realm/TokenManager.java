@@ -4,6 +4,7 @@ import com.multi.auth.shiro.session.CustomSessionManager;
 import com.multi.common.util.SpringContextUtil;
 import com.multi.data.model.UUser;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 
@@ -85,8 +86,11 @@ public class TokenManager {
      * @return
      */
     public static UUser login(UUser user,Boolean rememberMe){
-        ShiroToken token = new ShiroToken(user.getEmail(), user.getPswd());
-        token.setRememberMe(rememberMe);
+
+        UsernamePasswordToken token=new UsernamePasswordToken(user.getEmail(),user.getPswd(),rememberMe);
+
+        //token = new ShiroToken(user.getEmail(), user.getPswd());
+       // token.setRememberMe(rememberMe);
         SecurityUtils.getSubject().login(token);
         return getToken();
     }
