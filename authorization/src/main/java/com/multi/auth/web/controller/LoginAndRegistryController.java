@@ -1,5 +1,6 @@
 package com.multi.auth.web.controller;
 
+import com.multi.auth.web.bo.ResponseModel;
 import com.multi.data.model.UUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -19,10 +20,29 @@ public class LoginAndRegistryController {
 
 
     @RequestMapping("submit")
-    public String submitLogin(UUser user, Boolean rememberMe, HttpServletRequest request){
+    public ResponseModel<UUser> submitLogin(UUser user, Boolean rememberMe, HttpServletRequest request) {
         UsernamePasswordToken token = new UsernamePasswordToken(user.getEmail(), user.getPswd());
         token.setRememberMe(rememberMe);
         SecurityUtils.getSubject().login(token);
-        return "{\"login\":\"success\"}";
+
+        return new ResponseModel<>("success", 1, user);
+    }
+
+    @RequestMapping("/registry")
+    public ResponseModel<UUser> registry(UUser user){
+        //TODO
+        return new ResponseModel<>("success", 1, user);
+    }
+
+    @RequestMapping("/resetPassword")
+    public ResponseModel<UUser> resetPassword(UUser user){
+        //TODO
+        return new ResponseModel<>("success", 1, user);
+    }
+
+    @RequestMapping("logout")
+    public ResponseModel<UUser> logout(UUser user, HttpServletRequest request) {
+        //TODO
+        return new ResponseModel<>("success", 1, user);
     }
 }

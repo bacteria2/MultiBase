@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multi.data.reletiondb.user.dao.MResourceMapper">
+  <resultMap id="BaseResultMap" type="com.multi.data.reletiondb.user.MResource">
+    <id column="res_id" jdbcType="BIGINT" property="id" />
+    <result column="res_name" jdbcType="VARCHAR" property="name" />
+    <result column="res_type" jdbcType="VARCHAR" property="type" />
+    <result column="res_priority" jdbcType="VARCHAR" property="priority" />
+    <result column="res_parent_id" jdbcType="SMALLINT" property="parentId" />
+    <result column="res_permission" jdbcType="VARCHAR" property="permission" />
+    <result column="res_status" jdbcType="TINYINT" property="status" />
+    <result column="res_creator" jdbcType="VARCHAR" property="creator" />
+    <result column="res_create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="res_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    res.id as res_id, res.name as res_name, res.type as res_type, res.priority as res_priority, 
+    res.parent_id as res_parent_id, res.permission as res_permission, res.status as res_status, 
+    res.creator as res_creator, res.create_time as res_create_time, res.update_time as res_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from multi_demo_resource res
+    where res.id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from multi_demo_resource
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.multi.data.reletiondb.user.MResource">
+    insert into multi_demo_resource (id, name, type, 
+      priority, parent_id, permission, 
+      status, creator, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{priority,jdbcType=VARCHAR}, #{parentId,jdbcType=SMALLINT}, #{permission,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT}, #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.multi.data.reletiondb.user.MResource">
+    insert into multi_demo_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="permission != null">
+        permission,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=SMALLINT},
+      </if>
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.multi.data.reletiondb.user.MResource">
+    update multi_demo_resource
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=SMALLINT},
+      </if>
+      <if test="permission != null">
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.multi.data.reletiondb.user.MResource">
+    update multi_demo_resource
+    set name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=SMALLINT},
+      permission = #{permission,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
