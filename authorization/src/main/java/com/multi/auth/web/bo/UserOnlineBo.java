@@ -1,9 +1,9 @@
-package com.multi.auth.shiro.bo;
+package com.multi.auth.web.bo;
 
 
 
 import com.multi.data.model.UUser;
-import java.io.Serializable;
+
 import java.util.Date;
 
 /**

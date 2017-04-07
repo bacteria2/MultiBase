@@ -34,8 +34,6 @@ public class CustomSessionDAO extends EnterpriseCacheSessionDAO {
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
-        Session session = super.doReadSession(sessionId);
-      //  session.getAttributeKeys();
         return sessionRepository.getSession(sessionId);
     }
 

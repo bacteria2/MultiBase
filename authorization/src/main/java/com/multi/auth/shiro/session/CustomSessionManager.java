@@ -3,7 +3,7 @@ package com.multi.auth.shiro.session;
 import com.multi.auth.shiro.CustomSessionDAO;
 import com.multi.common.util.StringUtils;
 import com.multi.data.model.UUser;
-import com.multi.auth.shiro.bo.UserOnlineBo;
+import com.multi.auth.web.bo.UserOnlineBo;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.support.DefaultSubjectContext;

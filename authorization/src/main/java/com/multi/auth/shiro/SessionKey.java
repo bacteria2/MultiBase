@@ -6,7 +6,7 @@ package com.multi.auth.shiro;
  * @description input useage
  */
 public enum SessionKey {
-    RedisSessionKey("shiro_session_%s");
+    RedisSessionKey("shiro_session_%s"),RedisAllKeyHash("shiro_session_all");
 
     private String keyPrefix;
 
@@ -16,5 +16,9 @@ public enum SessionKey {
 
     public String getKey(String... key){
         return String.format(keyPrefix, (Object[]) key);
+    }
+
+    public String getKey(){
+        return keyPrefix;
     }
 }

@@ -1,6 +1,6 @@
 package com.multi.auth.shiro.filter;
 
-import com.multi.auth.shiro.realm.TokenManager;
+
 import com.multi.data.model.UUser;
 import org.apache.shiro.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class LoginFilter  extends AccessControlFilter {
 	protected boolean isAccessAllowed(ServletRequest request,
 			ServletResponse response, Object mappedValue) throws Exception {
 		
-		UUser token = TokenManager.getToken();
+		UUser token =(UUser)getSubject(request,response);
 		
 		if(null != token || isLoginRequest(request, response)){// && isEnabled()
             return Boolean.TRUE;

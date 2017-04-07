@@ -15,9 +15,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
-
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -37,8 +35,8 @@ public class SampleRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-
-        Long userId = TokenManager.getUserId();
+        UUser user=(UUser) SecurityUtils.getSubject();
+        Long userId = user==null?null:user.getId();
         SimpleAuthorizationInfo info =  new SimpleAuthorizationInfo();
         //根据用户ID查询角色（role），放入到Authorization里。
         Set<String> roles = roleService.findRoleByUserId(userId);
