@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.multi.data.reletiondb.user.dao.MResourceMapper">
-  <resultMap id="BaseResultMap" type="com.multi.data.reletiondb.user.MResource">
+<mapper namespace="com.multi.data.relationdb.user.dao.MResourceMapper">
+  <cache eviction="FIFO"/>
+
+  <resultMap id="BaseResultMap" type="com.multi.data.relationdb.user.MResource">
     <id column="res_id" jdbcType="BIGINT" property="id" />
     <result column="res_name" jdbcType="VARCHAR" property="name" />
-    <result column="res_type" jdbcType="VARCHAR" property="type" />
-    <result column="res_priority" jdbcType="VARCHAR" property="priority" />
+    <result column="res_type" jdbcType="TINYINT" property="type" />
+    <result column="res_priority" jdbcType="INTEGER" property="priority" />
     <result column="res_parent_id" jdbcType="SMALLINT" property="parentId" />
     <result column="res_permission" jdbcType="VARCHAR" property="permission" />
     <result column="res_status" jdbcType="TINYINT" property="status" />
@@ -14,7 +16,7 @@
     <result column="res_update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    res.id as res_id, res.name as res_name, res.type as res_type, res.priority as res_priority, 
+    res.id as res_id, res.name as res_name, res.type as res_type, res.priority as res_priority, res.resource as res_resource,
     res.parent_id as res_parent_id, res.permission as res_permission, res.status as res_status, 
     res.creator as res_creator, res.create_time as res_create_time, res.update_time as res_update_time
   </sql>
@@ -28,17 +30,17 @@
     delete from multi_demo_resource
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.multi.data.reletiondb.user.MResource">
+  <insert id="insert" parameterType="com.multi.data.relationdb.user.MResource">
     insert into multi_demo_resource (id, name, type, 
-      priority, parent_id, permission, 
+      priority, parent_id, permission, resource,
       status, creator, create_time, 
       update_time)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
-      #{priority,jdbcType=VARCHAR}, #{parentId,jdbcType=SMALLINT}, #{permission,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT},
+      #{priority,jdbcType=INTEGER}, #{parentId,jdbcType=SMALLINT}, #{permission,jdbcType=VARCHAR},#{resource,jdbcType=VARCHAR},
       #{status,jdbcType=TINYINT}, #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.multi.data.reletiondb.user.MResource">
+  <insert id="insertSelective" parameterType="com.multi.data.relationdb.user.MResource">
     insert into multi_demo_resource
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -59,18 +61,17 @@
       <if test="permission != null">
         permission,
       </if>
+      <if test="resource != null">
+        resource,
+      </if>
       <if test="status != null">
         status,
       </if>
       <if test="creator != null">
         creator,
       </if>
-      <if test="createTime != null">
         create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
+        update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -80,10 +81,10 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
-        #{type,jdbcType=VARCHAR},
+        #{type,jdbcType=TINYINT},
       </if>
       <if test="priority != null">
-        #{priority,jdbcType=VARCHAR},
+        #{priority,jdbcType=INTEGER},
       </if>
       <if test="parentId != null">
         #{parentId,jdbcType=SMALLINT},
@@ -91,31 +92,30 @@
       <if test="permission != null">
         #{permission,jdbcType=VARCHAR},
       </if>
+      <if test="resource != null">
+        #{resource,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
       <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+      now(),
+      now()
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.multi.data.reletiondb.user.MResource">
+  <update id="updateByPrimaryKeySelective" parameterType="com.multi.data.relationdb.user.MResource">
     update multi_demo_resource
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="type != null">
-        type = #{type,jdbcType=VARCHAR},
+        type = #{type,jdbcType=TINYINT},
       </if>
       <if test="priority != null">
-        priority = #{priority,jdbcType=VARCHAR},
+        priority = #{priority,jdbcType=INTEGER},
       </if>
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=SMALLINT},
@@ -123,32 +123,50 @@
       <if test="permission != null">
         permission = #{permission,jdbcType=VARCHAR},
       </if>
+      <if test="resource != null">
+        resource = #{resource,jdbcType=VARCHAR},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
       </if>
       <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        update_time = now()
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.multi.data.reletiondb.user.MResource">
+  <update id="updateByPrimaryKey" parameterType="com.multi.data.relationdb.user.MResource">
     update multi_demo_resource
     set name = #{name,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR},
-      priority = #{priority,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      priority = #{priority,jdbcType=INTEGER},
       parent_id = #{parentId,jdbcType=SMALLINT},
       permission = #{permission,jdbcType=VARCHAR},
+      resource = #{resource,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
       creator = #{creator,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectAllResource" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from multi_demo_resource as res
+  </select>
+
+  <select id="selectRolePermitResourceByRole" resultMap="BaseResultMap">
+  select <include refid="Base_Column_List"/> from multi_demo_resource as res
+</select>
+
+  <select id="selectResourcesByType" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select <include refid="Base_Column_List"/> from multi_demo_resource as res where res.type=#{0,jdbcType=TINYINT}
+  </select>
+
+  <select id="selectResourcesByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+    from(select * from multi_demo_role_resource where role_id=#{0,jdbcType=VARCHAR} )as role_res
+    left JOIN multi_demo_resource  as res on res.id=role_res.resource_id
+  </select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.multi.data.reletiondb.organization;
+package com.multi.data.relationdb.organization;
 
 import java.util.Date;
 

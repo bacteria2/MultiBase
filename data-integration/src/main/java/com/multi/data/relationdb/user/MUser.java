@@ -1,6 +1,6 @@
-package com.multi.data.reletiondb.user;
+package com.multi.data.relationdb.user;
 
-import com.multi.data.reletiondb.role.MRole;
+import com.multi.data.relationdb.role.MRole;
 
 import java.util.Date;
 import java.util.List;

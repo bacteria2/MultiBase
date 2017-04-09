@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.multi.data.reletiondb.role.dao.MRoleMapper">
-  <resultMap id="BaseResultMap" type="com.multi.data.reletiondb.role.MRole">
+<mapper namespace="com.multi.data.relationdb.role.dao.MRoleMapper">
+  <resultMap id="BaseResultMap" type="com.multi.data.relationdb.role.MRole">
     <id column="role_id" jdbcType="BIGINT" property="id" />
     <result column="role_role" jdbcType="INTEGER" property="role" />
+    <result column="role_name" jdbcType="VARCHAR" property="name" />
     <result column="role_decription" jdbcType="VARCHAR" property="decription" />
     <result column="role_status" jdbcType="TINYINT" property="status" />
     <result column="role_creator" jdbcType="VARCHAR" property="creator" />
     <result column="role_create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="role_update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+  <resultMap id="RoleUserMap" type="com.multi.data.relationdb.role.MRole" extends="BaseResultMap">
+    <collection property="userList" javaType="ArrayList" ofType="com.multi.data.relationdb.user.MUser"
+                resultMap="com.multi.data.relationdb.user.dao.MUserMapper.BaseResultMap"  />
+  </resultMap>
   <sql id="Base_Column_List">
-    role.id as role_id, role.role as role_role, role.decription as role_decription, role.status as role_status, 
+    role.id as role_id, role.role as role_role, role.name as role_name,role.decription as role_decription, role.status as role_status,
     role.creator as role_creator, role.create_time as role_create_time, role.update_time as role_update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -24,15 +29,15 @@
     delete from multi_demo_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.multi.data.reletiondb.role.MRole">
-    insert into multi_demo_role (id, role, decription, 
+  <insert id="insert" parameterType="com.multi.data.relationdb.role.MRole">
+    insert into multi_demo_role (id, role, name,decription,
       status, creator, create_time, 
       update_time)
-    values (#{id,jdbcType=BIGINT}, #{role,jdbcType=INTEGER}, #{decription,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{role,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},#{decription,jdbcType=VARCHAR},
       #{status,jdbcType=TINYINT}, #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.multi.data.reletiondb.role.MRole">
+  <insert id="insertSelective" parameterType="com.multi.data.relationdb.role.MRole" useGeneratedKeys="true" keyProperty="id">
     insert into multi_demo_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -40,6 +45,9 @@
       </if>
       <if test="role != null">
         role,
+      </if>
+      <if test="name != null">
+        name,
       </if>
       <if test="decription != null">
         decription,
@@ -50,12 +58,8 @@
       <if test="creator != null">
         creator,
       </if>
-      <if test="createTime != null">
         create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
+        update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -63,6 +67,9 @@
       </if>
       <if test="role != null">
         #{role,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
       <if test="decription != null">
         #{decription,jdbcType=VARCHAR},
@@ -73,19 +80,18 @@
       <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+      now(),
+      now()
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.multi.data.reletiondb.role.MRole">
+  <update id="updateByPrimaryKeySelective" parameterType="com.multi.data.relationdb.role.MRole">
     update multi_demo_role
     <set>
       <if test="role != null">
         role = #{role,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="decription != null">
         decription = #{decription,jdbcType=VARCHAR},
@@ -96,18 +102,14 @@
       <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+      update_time =now(),
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.multi.data.reletiondb.role.MRole">
+  <update id="updateByPrimaryKey" parameterType="com.multi.data.relationdb.role.MRole">
     update multi_demo_role
     set role = #{role,jdbcType=INTEGER},
+      name=#{name,jdbcType=VARCHAR},
       decription = #{decription,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
       creator = #{creator,jdbcType=VARCHAR},
@@ -115,4 +117,17 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectRoleUsersByRoleId" parameterType="java.lang.Long"  resultMap="RoleUserMap">
+    select
+    <include refid="Base_Column_List" />,
+    <include refid="com.multi.data.relationdb.user.dao.MUserMapper.Base_Column_List" />
+    from(select * from multi_demo_role where id=#{userId,jdbcType=VARCHAR} )as role
+    left JOIN multi_demo_user_role  as user_role on role.id=user_role.role_id
+    left join multi_demo_user as  user on user_role.user_id=user.id
+  </select>
+
+  <select id="selectAllRole" resultType="ArrayList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from multi_demo_role as role
+  </select>
 </mapper>

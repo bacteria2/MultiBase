@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.multi.data.reletiondb.user.dao.MUserMapper">
-  <resultMap id="BaseResultMap" type="com.multi.data.reletiondb.user.MUser">
+<mapper namespace="com.multi.data.relationdb.user.dao.MUserMapper">
+    <cache eviction="FIFO"/>
+  <resultMap id="BaseResultMap" type="com.multi.data.relationdb.user.MUser">
     <id column="user_id" jdbcType="BIGINT" property="id" />
     <result column="user_username" jdbcType="VARCHAR" property="username" />
     <result column="user_password" jdbcType="VARCHAR" property="password" />
@@ -16,6 +17,12 @@
     <result column="user_create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="user_update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
+
+    <resultMap id="UserRoleMap" type="com.multi.data.relationdb.user.MUser" extends="BaseResultMap">
+        <collection property="roleList"  ofType="com.multi.data.relationdb.role.MRole"
+                    javaType="ArrayList" resultMap="com.multi.data.relationdb.role.dao.MRoleMapper.BaseResultMap"/>
+    </resultMap>
+
   <sql id="Base_Column_List">
     user.id as user_id, user.username as user_username, user.password as user_password, 
     user.salt as user_salt, user.status as user_status, user.email as user_email, user.mobile as user_mobile, 
@@ -32,7 +39,7 @@
     delete from multi_demo_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.multi.data.reletiondb.user.MUser">
+  <insert id="insert" parameterType="com.multi.data.relationdb.user.MUser">
     insert into multi_demo_user (id, username, password, 
       salt, status, email, 
       mobile, nickName, last_login_ip, 
@@ -44,7 +51,7 @@
       #{lastLoginTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.multi.data.reletiondb.user.MUser">
+  <insert id="insertSelective" parameterType="com.multi.data.relationdb.user.MUser" useGeneratedKeys="true" keyProperty="id">
     insert into multi_demo_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -80,12 +87,8 @@
       <if test="creator != null">
         creator,
       </if>
-      <if test="createTime != null">
         create_time,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
+        update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -121,15 +124,10 @@
       <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+      now(),now()
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.multi.data.reletiondb.user.MUser">
+  <update id="updateByPrimaryKeySelective" parameterType="com.multi.data.relationdb.user.MUser">
     update multi_demo_user
     <set>
       <if test="username != null">
@@ -171,7 +169,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.multi.data.reletiondb.user.MUser">
+  <update id="updateByPrimaryKey" parameterType="com.multi.data.relationdb.user.MUser">
     update multi_demo_user
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
@@ -187,4 +185,17 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectUserRolesByUserId" parameterType="java.lang.Long"  resultMap="UserRoleMap">
+   select
+      <include refid="Base_Column_List" />,
+    <include refid="com.multi.data.relationdb.role.dao.MRoleMapper.Base_Column_List" />
+    from(select * from multi_demo_user where id=#{userId,jdbcType=VARCHAR} )as user
+    left JOIN multi_demo_user_role  as user_role on user.id=user_role.user_id
+    left join multi_demo_role as  role on user_role.role_id=role.id
+  </select>
+
+    <select id="selectAllUser" resultMap="BaseResultMap" resultType="ArrayList">
+        select <include refid="Base_Column_List" /> from multi_demo_user as user ORDER BY update_time DESC
+    </select>
 </mapper>

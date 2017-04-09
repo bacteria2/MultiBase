@@ -26,7 +26,7 @@ import java.util.Properties;
  * @description input useage
  */
 @Configuration
-@MapperScan(basePackages = "com.multi.data.dao")
+@MapperScan(basePackages = "com.multi.data.relationdb")
 public class MybatisConfiguration {
 
     @Autowired
@@ -49,6 +49,8 @@ public class MybatisConfiguration {
         config.setMaximumPoolSize(Integer.valueOf(dbEnvironment.getProperty("dataSource.maximumPoolSize")));
         return new HikariDataSource(config);
     }
+
+    /** 分页插件 @{pageHelper}*/
     @Bean
     public PageInterceptor pageInterceptor(){
         PageInterceptor interceptor=  new PageInterceptor();
@@ -63,7 +65,7 @@ public class MybatisConfiguration {
     public SqlSessionFactory sessionFactoryBean(DataSource dataSource,PathMatchingResourcePatternResolver resolver,PageInterceptor interceptor ) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean= new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
-        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath*:/session/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:/mapper/**/*.xml"));
         sqlSessionFactoryBean.setPlugins(new Interceptor[]{
                 interceptor
         });

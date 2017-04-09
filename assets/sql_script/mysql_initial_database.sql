@@ -43,11 +43,12 @@ CREATE TABLE `multi_demo_organization` (
 DROP TABLE IF EXISTS `multi_demo_resource`;
 CREATE TABLE `multi_demo_resource` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增长ID',
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `type` varchar(255) NOT NULL DEFAULT '',
-  `priority` varchar(255) NOT NULL DEFAULT '',
+  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '资源名',
+  `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '资源类型 1:url,2:按钮 ',
+  `priority` int(255) NOT NULL DEFAULT '0' COMMENT'排序',
   `parent_id` smallint(6) NOT NULL DEFAULT '0',
-  `permission` varchar(255) NOT NULL DEFAULT '',
+  `permission` varchar(255) NOT NULL DEFAULT '权限等级',
+  `resource` varchar(255) NOT NULL DEFAULT '资源定义',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态: 0:禁用 1:启用 2:废弃',
   `creator` varchar(60) NOT NULL DEFAULT '' COMMENT '创建者',
   `create_time` datetime NOT NULL DEFAULT '1970/1/1 0:00:00' COMMENT '创建时间',
@@ -65,6 +66,7 @@ CREATE TABLE `multi_demo_resource` (
 DROP TABLE IF EXISTS `multi_demo_role`;
 CREATE TABLE `multi_demo_role` (
  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增长ID',
+  `name` VARCHAR(60) not NULL DEFAULT '' COMMENT '角色名称',
   `role` int(11) NOT NULL DEFAULT '0' COMMENT '0,1,2,3,4,5,6类型',
   `decription` varchar(255) NOT NULL DEFAULT '' COMMENT '角色说明',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态:',
@@ -110,11 +112,13 @@ CREATE TABLE `multi_demo_user` (
 -- ----------------------------
 DROP TABLE IF EXISTS `multi_demo_role_resource`;
 CREATE TABLE `multi_demo_role_resource` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增长ID',
   `role_id` varchar(60) NOT NULL DEFAULT ''  COMMENT '角色ID',
   `resource_id` varchar(60) NOT NULL DEFAULT '' COMMENT'资源ID',
   `creator` varchar(60) NULL DEFAULT '' COMMENT '创建者',
   `create_time` datetime NOT NULL DEFAULT '1970/1/1 0:00:00' COMMENT '创建时间',
-  `update_time` datetime NOT NULL DEFAULT '1970/1/1 0:00:00' COMMENT '最后一次修改时间'
+  `update_time` datetime NOT NULL DEFAULT '1970/1/1 0:00:00' COMMENT '最后一次修改时间',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -127,11 +131,13 @@ CREATE TABLE `multi_demo_role_resource` (
 -- ----------------------------
 DROP TABLE IF EXISTS `multi_demo_user_role`;
 CREATE TABLE `multi_demo_user_role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增长ID',
   `role_id` varchar(60) NOT NULL DEFAULT ''  COMMENT '角色ID',
   `user_id` varchar(60) NOT NULL DEFAULT ''  COMMENT '用户ID',
   `creator` varchar(60) NULL DEFAULT '' COMMENT '创建者',
   `create_time` datetime NOT NULL DEFAULT '1970/1/1 0:00:00' COMMENT '创建时间',
-  `update_time` datetime NOT NULL DEFAULT '1970/1/1 0:00:00' COMMENT '最后一次修改时间'
+  `update_time` datetime NOT NULL DEFAULT '1970/1/1 0:00:00' COMMENT '最后一次修改时间',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------

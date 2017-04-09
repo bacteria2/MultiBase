@@ -1,19 +1,24 @@
-package com.multi.data.reletiondb.user;
+package com.multi.data.relationdb.user;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MResource {
+public class MResource implements Serializable {
+
+    private static final Long serialVersionUID=-123L;
+
     private Long id;
 
     private String name;
 
-    private String type;
+    private int type;
 
-    private String priority;
+    private int priority;
 
     private Short parentId;
 
     private String permission;
+    private String resource;
 
     private Byte status;
 
@@ -22,6 +27,14 @@ public class MResource {
     private Date createTime;
 
     private Date updateTime;
+
+    public String getResource() {
+        return resource;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
+    }
 
     public Long getId() {
         return id;
@@ -39,20 +52,20 @@ public class MResource {
         this.name = name == null ? null : name.trim();
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type == null ? null : type.trim();
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public String getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
-        this.priority = priority == null ? null : priority.trim();
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public Short getParentId() {

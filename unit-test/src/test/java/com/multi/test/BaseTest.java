@@ -20,7 +20,6 @@ import javax.sql.DataSource;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={MainConfiguration.class})
-@WebAppConfiguration
 @ActiveProfiles("development")
 public class BaseTest extends AbstractJUnit4SpringContextTests {
 

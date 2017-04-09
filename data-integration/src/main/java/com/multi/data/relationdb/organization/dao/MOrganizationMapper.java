@@ -1,6 +1,6 @@
-package com.multi.data.reletiondb.organization.dao;
+package com.multi.data.relationdb.organization.dao;
 
-import com.multi.data.reletiondb.user.model.MOrganization;
+import com.multi.data.relationdb.organization.MOrganization;
 
 public interface MOrganizationMapper {
     int deleteByPrimaryKey(Long id);

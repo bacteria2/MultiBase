@@ -30,7 +30,7 @@
             targetPackage     指定生成的model生成所在的包名
             targetProject     指定在该项目下所在的路径
         -->
-        <javaModelGenerator targetPackage="com.multi.data.reletiondb.user.model" targetProject="../src/main/java" >
+        <javaModelGenerator targetPackage="com.multi.data.relationdb.user.model" targetProject="../src/main/java" >
             <!-- 是否对model添加 构造函数 -->
             <property name="constructorBased" value="false"/>
             <!-- 是否允许子包，即targetPackage.schemaName.tableName-->
@@ -52,13 +52,13 @@
                 type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
                 type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口
         -->
-        <javaClientGenerator targetPackage="com.multi.data.reletiondb.user.dao" targetProject="../src/main/java" type="XMLMAPPER">
+        <javaClientGenerator targetPackage="com.multi.data.relationdb.user.dao" targetProject="../src/main/java" type="XMLMAPPER">
             <property name="enableSubPackages" value="true"/>
             <!-- 为生成的接口添加父接口
             <property name="rootInterface" value="com.ys.ydp.base.db.IBaseDAO"/>-->
         </javaClientGenerator>
 
-        <table mapperName="MUserRoleMapper" alias="user_role" domainObjectName="MUserRole" tableName="multi_demo_user_role" enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableCountByExample="false" >
+        <table mapperName="MUserRoleMapper" alias="user_role"   domainObjectName="MUserRole" tableName="multi_demo_user_role" enableSelectByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableCountByExample="false" >
             <property name="useActualColumnNames" value="false" />
             <!--<property name="rootInterface" value="com.ys.ydp.base.db.IBaseDAO"/>-->
             <!-- optional   , only for mybatis3 runtime
@@ -107,7 +107,7 @@
 
             <columnOverride column="" javaType="" jdbcType="" typeHandler="" delimitedColumnName=""/> -->
         </table>
-        <table mapperName="MRoleResourceMapper" alias="role_res" domainObjectName="MRoleResource" tableName="multi_demo_role_resource" enableSelectByExample="false" enableUpdateByExample="false" enableCountByExample="false" enableDeleteByExample="false">
+        <table mapperName="MRoleResourceMapper" alias="role_res" domainObjectName="MRoleResource" tableName="multi_demo_role_resource" enableSelectByExample="false" enableUpdateByExample="false" enableCountByExample="false"  enableDeleteByExample="false">
             <property name="useActualColumnNames" value="false" />
         </table>
 

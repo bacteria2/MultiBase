@@ -1,6 +1,9 @@
-package com.multi.data.reletiondb.role;
+package com.multi.data.relationdb.role;
+
+import com.multi.data.relationdb.user.MUser;
 
 import java.util.Date;
+import java.util.List;
 
 public class MRole {
     private Long id;
@@ -16,6 +19,26 @@ public class MRole {
     private Date createTime;
 
     private Date updateTime;
+
+    private List<MUser> userList;
+
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<MUser> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<MUser> userList) {
+        this.userList = userList;
+    }
 
     public Long getId() {
         return id;
