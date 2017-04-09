@@ -26,4 +26,6 @@ public interface MResourceMapper {
     List<MResource> selectResourcesByType(int type);
 
     List<MResource> selectResourcesByRoleId(Long id);
+
+    int batchInsertResourceRole(Long ResourceId,Long... roleIDs);
 }

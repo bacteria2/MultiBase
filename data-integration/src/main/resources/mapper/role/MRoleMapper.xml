@@ -130,4 +130,19 @@
   <select id="selectAllRole" resultType="ArrayList" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from multi_demo_role as role
   </select>
+
+  <insert id="batchInsertRoleResources">
+    INSERT into multi_demo_role_resource
+    (role_id,resource_id,creator,create_time,update_time) VALUES
+      <foreach collection="resourceIds"  item="resource_id" separator=",">
+        (#{roleId,jdbcType=VARCHAR},#{resource_id,jdbcType=VARCHAR},#{creator,jdbcType=VARCHAR},now(),now())
+      </foreach>
+  </insert>
+  <insert id="batchInsertRoleUser">
+    INSERT into multi_demo_user_role
+    (user_id,role_id,creator,create_time,update_time) VALUES
+    <foreach collection="userIds"  item="user_id" separator=",">
+      (#{user_id,jdbcType=VARCHAR},#{roleId,jdbcType=VARCHAR},#{creator,jdbcType=VARCHAR},now(),now())
+    </foreach>
+  </insert>
 </mapper>

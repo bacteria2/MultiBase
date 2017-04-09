@@ -21,7 +21,9 @@ public class RoleMapperTest  extends BaseTest{
         role.setName("role1");
         role.setRole(15);
 
-        roleMapper.insertSelective(role);
-
+        //roleMapper.insertSelective(role);
+        Long[] userIds=new Long[]{1L, 4L, 5L};
+        //int i = roleMapper.batchInsertRoleResources(4L, "",1L, 4L, 5L);
+        roleMapper.batchInsertRoleUser(4L, "",1L, 4L, 5L);
     }
 }
