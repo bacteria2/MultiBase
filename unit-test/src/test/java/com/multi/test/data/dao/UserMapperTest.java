@@ -32,15 +32,21 @@ public class UserMapperTest extends BaseTest {
 
     @Test
     public void selectUser(){
-          userMapper.selectAllUser(new RowBounds(1,2)).forEach(el->System.out.println(JSON.toJSONString(el)));
+          userMapper.selectAllUser(new RowBounds(1,1)).forEach(el->System.out.println(JSON.toJSONString(el)));
 
           userMapper.selectUserByUserName("1");
     }
 
     @Test
-    public void selectEnum(){
+    public void selectExistCheck(){
+        MUser muser=new MUser();
 
-        System.out.println(Status.valueOf("Bannd"));
+
+
+        System.out.println(JSON.toJSONString(userMapper.userExistCheck(muser)));;
+
     }
+
+
 
 }

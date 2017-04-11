@@ -178,8 +178,8 @@
     left join multi_demo_role as  role on user_role.role_id=role.id
   </select>
 
-  <select id="selectAllUser" resultMap="BaseResultMap"  resultType="ArrayList">
-    select <include refid="Base_Column_List" /> from multi_demo_user where deleted != '1' as user ORDER BY update_time DESC
+  <select id="selectAllUser" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from multi_demo_user as user  where deleted != '1' ORDER BY update_time DESC
   </select>
 
 
@@ -192,4 +192,21 @@
   <update id="deleteById" parameterType="java.lang.Long">
     update multi_demo_user set deleted=1 where id=#{id}
   </update>
+
+  <!--用户名,手机,邮箱重复查询 逻辑删除-->
+  <select id="userExistCheck" parameterType="com.multi.data.relationdb.user.MUser" resultMap="BaseResultMap" resultType="ArrayList">
+    select <include refid="Base_Column_List" /> FROM multi_demo_user as user
+    <where>
+      <if test="mobile != null">
+        mobile=#{mobile}
+      </if>
+      <if test="username != null">
+        or username=#{userName}
+      </if>
+      <if test="email != null">
+        or email=#{email}
+      </if>
+    </where>
+    as user
+  </select>
 </mapper>

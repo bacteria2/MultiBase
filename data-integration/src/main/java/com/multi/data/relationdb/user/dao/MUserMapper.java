@@ -24,4 +24,7 @@ public interface MUserMapper {
     List<MUser>  selectAllUser();
 
     List<MUser>  selectAllUser(RowBounds rowBounds);
+
+    List<MUser> userExistCheck(MUser user);
+
 }
