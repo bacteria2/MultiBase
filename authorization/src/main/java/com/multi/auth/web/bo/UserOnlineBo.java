@@ -2,14 +2,15 @@ package com.multi.auth.web.bo;
 
 
 
-import com.multi.data.model.UUser;
+
+import com.multi.data.relationdb.user.MUser;
 
 import java.util.Date;
 
 /**
  *
  */
-public class UserOnlineBo extends UUser {
+public class UserOnlineBo extends MUser {
 	
 	//Session Id
 	private String sessionId;
@@ -27,8 +28,8 @@ public class UserOnlineBo extends UUser {
 	public UserOnlineBo() {
 	}
 	
-	public UserOnlineBo(UUser user) {
-		super(user);
+	public UserOnlineBo(MUser user) {
+
 	}
 	
 	

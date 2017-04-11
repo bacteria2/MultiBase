@@ -11,8 +11,7 @@ dependencies {
             project(":common"),
             project(":data-integration"),
             project(":message-center"),
-            project(":authorization"),
-            project(":web-admin")
+            project(":authorization")
     )
     testCompile(
             "org.springframework:spring-test:${springVersion}",

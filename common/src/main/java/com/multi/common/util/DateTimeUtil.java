@@ -13,7 +13,7 @@ public class DateTimeUtil {
      * @param format 时间格式 yyyy-MM-hh HH:mm:ss.SSS
      *
      */
-    public static String CurrentTimeString(String format){
+    public static String currentTimeString(String format){
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(format));
     }
 

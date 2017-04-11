@@ -65,9 +65,9 @@ public class MainConfiguration implements ApplicationContextAware {
         return configurer;
     }
 
-    @Bean
+    /*  @Bean
     public BeanPostProcessor postProcessor() {
-        return new BeanPostProcessor() {
+      return new BeanPostProcessor() {
             @Override
             public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 
@@ -84,7 +84,7 @@ public class MainConfiguration implements ApplicationContextAware {
                 return bean;
             }
         };
-    }
+    }*/
 
 
     @Override

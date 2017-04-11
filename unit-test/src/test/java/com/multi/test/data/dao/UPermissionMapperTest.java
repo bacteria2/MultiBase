@@ -52,7 +52,7 @@ public class UPermissionMapperTest extends BaseTest {
 
         roleMapper.updateByPrimaryKeySelective(role);
         System.out.println(Instant.now().toEpochMilli());
-        System.out.println(DateTimeUtil.CurrentTimeString("yyyy-MM-dd HH:mm:ss.SSS"));
+        System.out.println(DateTimeUtil.currentTimeString("yyyy-MM-dd HH:mm:ss.SSS"));
 
     }
 

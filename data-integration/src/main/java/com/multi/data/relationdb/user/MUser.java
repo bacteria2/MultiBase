@@ -1,11 +1,16 @@
 package com.multi.data.relationdb.user;
 
+import com.multi.data.relationdb.Status;
 import com.multi.data.relationdb.role.MRole;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class MUser {
+public class MUser implements Serializable {
+
+    private static final Long serialVersionUID=123111L;
+
     private Long id;
 
     private String username;
@@ -14,11 +19,11 @@ public class MUser {
 
     private String salt;
 
-    private Byte status;
+    private Short status;
 
     private String email;
 
-    private Integer mobile;
+    private String mobile;
 
     private String nickname;
 
@@ -27,6 +32,8 @@ public class MUser {
     private Date lastLoginTime;
 
     private String creator;
+
+    private String modifier;
 
     private Date createTime;
 
@@ -68,11 +75,11 @@ public class MUser {
         this.salt = salt == null ? null : salt.trim();
     }
 
-    public Byte getStatus() {
+    public Short getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Short status) {
         this.status = status;
     }
 
@@ -84,11 +91,11 @@ public class MUser {
         this.email = email == null ? null : email.trim();
     }
 
-    public Integer getMobile() {
+    public String getMobile() {
         return mobile;
     }
 
-    public void setMobile(Integer mobile) {
+    public void setMobile(String mobile) {
         this.mobile = mobile;
     }
 
@@ -122,6 +129,14 @@ public class MUser {
 
     public void setCreator(String creator) {
         this.creator = creator == null ? null : creator.trim();
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
     }
 
     public Date getCreateTime() {

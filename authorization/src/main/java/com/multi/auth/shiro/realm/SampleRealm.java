@@ -1,3 +1,4 @@
+/*
 package com.multi.auth.shiro.realm;
 
 import com.google.common.base.Preconditions;
@@ -18,11 +19,13 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import java.util.Date;
 import java.util.Set;
 
+*/
 /**
  * @author shepard.xia
  * @date 2017年03月29日
  * @description input useage
- */
+ *//*
+
 public class SampleRealm extends AuthorizingRealm {
 
     private IUserService userService=new IUserService(){};
@@ -62,21 +65,26 @@ public class SampleRealm extends AuthorizingRealm {
         return  new SimpleAuthenticationInfo(user,user.getPswd(), getName());
     }
 
-    /**
+    */
+/**
      * 清空当前用户权限信息
-     */
+     *//*
+
     public  void clearCachedAuthorizationInfo() {
         PrincipalCollection principalCollection = SecurityUtils.getSubject().getPrincipals();
         SimplePrincipalCollection principals = new SimplePrincipalCollection(
                 principalCollection, getName());
         super.clearCachedAuthorizationInfo(principals);
     }
-    /**
+    */
+/**
      * 指定principalCollection 清除
-     */
+     *//*
+
     public void clearCachedAuthorizationInfo(PrincipalCollection principalCollection) {
         SimplePrincipalCollection principals = new SimplePrincipalCollection(
                 principalCollection, getName());
         super.clearCachedAuthorizationInfo(principals);
     }
 }
+*/

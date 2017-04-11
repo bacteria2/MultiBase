@@ -7,15 +7,17 @@
     <result column="user_username" jdbcType="VARCHAR" property="username" />
     <result column="user_password" jdbcType="VARCHAR" property="password" />
     <result column="user_salt" jdbcType="VARCHAR" property="salt" />
-    <result column="user_status" jdbcType="TINYINT" property="status" />
     <result column="user_email" jdbcType="VARCHAR" property="email" />
-    <result column="user_mobile" jdbcType="INTEGER" property="mobile" />
+    <result column="user_mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="user_nickName" jdbcType="VARCHAR" property="nickname" />
+    <result column="user_status" jdbcType="TINYINT" property="status" />
     <result column="user_last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
     <result column="user_last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
     <result column="user_creator" jdbcType="VARCHAR" property="creator" />
+    <result column="user_last_modifier" jdbcType="VARCHAR" property="modifier"/>
     <result column="user_create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="user_update_time" jdbcType="TIMESTAMP" property="updateTime" />
+
   </resultMap>
 
     <resultMap id="UserRoleMap" type="com.multi.data.relationdb.user.MUser" extends="BaseResultMap">
@@ -27,30 +29,17 @@
     user.id as user_id, user.username as user_username, user.password as user_password, 
     user.salt as user_salt, user.status as user_status, user.email as user_email, user.mobile as user_mobile, 
     user.nickName as user_nickName, user.last_login_ip as user_last_login_ip, user.last_login_time as user_last_login_time, 
-    user.creator as user_creator, user.create_time as user_create_time, user.update_time as user_update_time
+    user.creator as user_creator,user.last_modifier as user_last_modifier, user.create_time as user_create_time, user.update_time as user_update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from multi_demo_user user
-    where user.id = #{id,jdbcType=BIGINT}
+    where user.id = #{id,jdbcType=BIGINT} and deleted != '1'
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from multi_demo_user
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
-  <insert id="insert" parameterType="com.multi.data.relationdb.user.MUser">
-    insert into multi_demo_user (id, username, password, 
-      salt, status, email, 
-      mobile, nickName, last_login_ip, 
-      last_login_time, creator, create_time, 
-      update_time)
-    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{salt,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{email,jdbcType=VARCHAR}, 
-      #{mobile,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{lastLoginIp,jdbcType=VARCHAR}, 
-      #{lastLoginTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
+
+
+
   <insert id="insertSelective" parameterType="com.multi.data.relationdb.user.MUser" useGeneratedKeys="true" keyProperty="id">
     insert into multi_demo_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -86,6 +75,9 @@
       </if>
       <if test="creator != null">
         creator,
+      </if>
+      <if test="modifier != null">
+        last_modifier,
       </if>
         create_time,
         update_time
@@ -124,6 +116,9 @@
       <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
+      <if test="modifier != null">
+        #{modifier,jdbcType=VARCHAR},
+      </if>
       now(),now()
     </trim>
   </insert>
@@ -160,6 +155,9 @@
       <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
+      <if test="modifier != null">
+        last_modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -169,33 +167,29 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.multi.data.relationdb.user.MUser">
-    update multi_demo_user
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      salt = #{salt,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
-      email = #{email,jdbcType=VARCHAR},
-      mobile = #{mobile,jdbcType=INTEGER},
-      nickName = #{nickname,jdbcType=VARCHAR},
-      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
-      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
-      creator = #{creator,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
 
+  <!---->
   <select id="selectUserRolesByUserId" parameterType="java.lang.Long"  resultMap="UserRoleMap">
    select
       <include refid="Base_Column_List" />,
     <include refid="com.multi.data.relationdb.role.dao.MRoleMapper.Base_Column_List" />
-    from(select * from multi_demo_user where id=#{userId,jdbcType=VARCHAR} )as user
+    from(select * from multi_demo_user where id=#{userId,jdbcType=VARCHAR} and deleted != '1'  )as user
     left JOIN multi_demo_user_role  as user_role on user.id=user_role.user_id
     left join multi_demo_role as  role on user_role.role_id=role.id
   </select>
 
-    <select id="selectAllUser" resultMap="BaseResultMap" resultType="ArrayList">
-        select <include refid="Base_Column_List" /> from multi_demo_user as user ORDER BY update_time DESC
-    </select>
+  <select id="selectAllUser" resultMap="BaseResultMap"  resultType="ArrayList">
+    select <include refid="Base_Column_List" /> from multi_demo_user where deleted != '1' as user ORDER BY update_time DESC
+  </select>
+
+
+  <!--使用用户名查找用户-->
+  <select id="selectUserByUserName" resultMap="BaseResultMap" parameterType="java.lang.String" resultType="com.multi.data.relationdb.user.MUser">
+    select <include refid="Base_Column_List" /> from multi_demo_user as user WHERE username=#{userName,jdbcType=VARCHAR} and deleted != '1'
+  </select>
+
+  <!--逻辑删除-->
+  <update id="deleteById" parameterType="java.lang.Long">
+    update multi_demo_user set deleted=1 where id=#{id}
+  </update>
 </mapper>

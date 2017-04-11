@@ -7,11 +7,12 @@ import com.multi.auth.shiro.CustomSessionDAO;
 import com.multi.auth.shiro.filter.LoginFilter;
 import com.multi.auth.shiro.filter.PermissionFilter;
 import com.multi.auth.shiro.filter.RoleFilter;
-import com.multi.auth.shiro.filter.SimpleAuthFilter;
-import com.multi.auth.shiro.listener.CustomSessionListener;
-import com.multi.auth.shiro.realm.SampleRealm;
 
-import com.multi.auth.shiro.session.CustomSessionManager;
+import com.multi.auth.shiro.listener.CustomSessionListener;
+
+
+import com.multi.auth.shiro.realm.ShiroRealm;
+
 import com.multi.auth.shiro.session.ISessionRepository;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
@@ -20,6 +21,7 @@ import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.session.mgt.eis.SessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
@@ -81,13 +83,22 @@ public class ShiroConfiguration {
         return cookie;
     }
 
-    @Bean(name="customSessionDAO")
-    public CustomSessionDAO customSessionDAO(){
-        return new CustomSessionDAO();
+    /**
+     * 使用shiro自带的cacheManger
+     */
+    @Bean
+    public CacheManager cacheManager() {
+        return new MemoryConstrainedCacheManager();
     }
 
     @Bean
-    public SessionManager defaultWebSessionManager(SessionListener listener,@Qualifier("customSessionDAO")CustomSessionDAO dao, @Qualifier("simpleCookie")Cookie sessionIdCookie){
+    public SessionDAO customSessionDAO(){
+        return new EnterpriseCacheSessionDAO();
+    }
+
+    @Bean
+    public SessionManager defaultWebSessionManager(CacheManager cacheManager,SessionDAO dao,
+                                                   @Qualifier("simpleCookie")Cookie sessionIdCookie){
         DefaultWebSessionManager sessionManager=new DefaultWebSessionManager();
 
         //VALIDATOR
@@ -95,15 +106,16 @@ public class ShiroConfiguration {
         validationScheduler.setSessionValidationInterval(1800000);
         validationScheduler.setSessionManager(sessionManager);
 
-       // sessionManager.setCacheManager(cacheManager);
+        sessionManager.setCacheManager(cacheManager);
         sessionManager.setSessionValidationInterval(1800000);
         sessionManager.setGlobalSessionTimeout(1800000);
         sessionManager.setSessionIdCookie(sessionIdCookie);
         sessionManager.setSessionDAO(dao);
-        sessionManager.setSessionListeners(Lists.newArrayList(listener));
+     //   sessionManager.setSessionListeners(Lists.newArrayList(listener));
         sessionManager.setDeleteInvalidSessions(true);
         sessionManager.setSessionValidationSchedulerEnabled(true);
         sessionManager.setSessionValidationScheduler(validationScheduler);
+
         return sessionManager;
     }
 
@@ -112,39 +124,34 @@ public class ShiroConfiguration {
     public CookieRememberMeManager rememberMeManager(@Qualifier("rememberMe")Cookie rememberMe){
         CookieRememberMeManager manager = new CookieRememberMeManager();
         manager.setCipherKey(Base64.decode("3AvVhmFLUs0KTA3Kprsdag=="));
+
         manager.setCookie(rememberMe);
         return manager;
     }
 
-     /**
-     * 使用shiro自带的cacheManger来保存Session
-     */
-  /*  @Bean
-    public MemoryConstrainedCacheManager cacheManager() {
-        return new MemoryConstrainedCacheManager();
-    }*/
 
 
+/*
      @Bean
      public SessionListener customSessionListener(ISessionRepository repository){
          CustomSessionListener listener=new CustomSessionListener();
          listener.setShiroSessionRepository(repository);
          return listener;
-     }
+     }*/
 
 
     @Bean
-    public SampleRealm simpleRealm(){
-        return new SampleRealm();
+    public ShiroRealm simpleRealm(){
+        return new ShiroRealm();
     }
 
     @Bean
-    public SessionsSecurityManager sessionsSecurityManager(Realm realm,SessionManager manager, CookieRememberMeManager rememberMe) {
+    public SessionsSecurityManager sessionsSecurityManager(CacheManager cacheManager,Realm realm,SessionManager manager, CookieRememberMeManager rememberMe) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
         securityManager.setSessionManager(manager);
         securityManager.setRememberMeManager(rememberMe);
-        //securityManager.setCacheManager(cacheManager);
+        securityManager.setCacheManager(cacheManager);
         return securityManager;
     }
 
@@ -157,7 +164,7 @@ public class ShiroConfiguration {
     @Bean(name = "shiroFilter")
     public ShiroFilterFactoryBean shiroFilter(SessionsSecurityManager manager) throws Exception {
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
-        factoryBean.setFilters(ImmutableMap.of("simple",new SimpleAuthFilter(),"login",new LoginFilter(),"role",new RoleFilter(),"permission",new PermissionFilter()));
+        factoryBean.setFilters(ImmutableMap.of("login",new LoginFilter(),"role",new RoleFilter(),"permission",new PermissionFilter()));
         factoryBean.setSecurityManager(manager);
         ClassPathResource resource=new ClassPathResource("shiro_filter_chain",this.getClass().getClassLoader());
         factoryBean.setFilterChainDefinitions(Files.toString(resource.getFile(), StandardCharsets.UTF_8));

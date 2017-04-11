@@ -1,9 +1,18 @@
 package com.multi.auth.shiro.service;
 
-import com.multi.data.model.UUser;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.multi.auth.shiro.EncryptionUtil;
+import com.multi.common.util.SpringContextUtil;
+import com.multi.data.relationdb.Status;
+import com.multi.data.relationdb.user.MUser;
+import com.multi.data.relationdb.user.dao.MUserMapper;
+import org.apache.shiro.crypto.SecureRandomNumberGenerator;
+import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * @author shepard.xia
@@ -13,9 +22,14 @@ import java.time.Instant;
 
 public interface IUserService {
 
+    int insertNewUser(MUser user,String creator);
 
-    default public UUser login(String userName, String password) {
-        return new UUser(12345L, "test", "test@email.com", "pwsd",
-                Date.from(Instant.now()), Date.from(Instant.now()), 1L);
-    }
+    int updateUserInfo(MUser user,String modifier);
+
+    int deleteUser(MUser user,String modifier);
+
+    List<MUser> getUserWithPage(int page,int number);
+
+    MUser login(String username,String password,String ip);
+
 }

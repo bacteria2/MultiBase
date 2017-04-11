@@ -1,3 +1,4 @@
+/*
 package com.multi.auth.shiro.session.impl;
 
 import com.alibaba.fastjson.JSON;
@@ -25,11 +26,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+*/
 /**
  * @author shepard.xia
  * @date 2017年03月29日
  * @description input useage
- */
+ *//*
+
 @Component
 @Conditional(ShiroRepositoryCondition.class)
 @SessionRepoType(RepoType.Redis)
@@ -89,9 +92,11 @@ public class RedisSessionRepository implements ISessionRepository {
 
     }
 
-    /**
+    */
+/**
      * keys命令可能会导致性能问题,需考虑是否有替代方案或者该方法使用频率
-     */
+     *//*
+
     @Override
     public Collection<Session> getAllSessions() {
         Set<Session> sessions = new HashSet<>();
@@ -108,3 +113,4 @@ public class RedisSessionRepository implements ISessionRepository {
 
     }
 }
+*/

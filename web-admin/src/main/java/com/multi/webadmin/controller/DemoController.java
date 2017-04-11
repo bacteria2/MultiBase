@@ -3,12 +3,9 @@ package com.multi.webadmin.controller;
 
 import com.google.common.collect.ImmutableMap;
 
-import com.multi.data.model.UUser;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.Map;
 
 /**
