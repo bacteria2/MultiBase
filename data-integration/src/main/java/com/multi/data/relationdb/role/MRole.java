@@ -10,7 +10,7 @@ public class MRole {
 
     private Integer role;
 
-    private String decription;
+    private String description;
 
     private Byte status;
 
@@ -56,12 +56,12 @@ public class MRole {
         this.role = role;
     }
 
-    public String getDecription() {
-        return decription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDecription(String decription) {
-        this.decription = decription == null ? null : decription.trim();
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     public Byte getStatus() {

@@ -1,6 +1,6 @@
 package com.multi.test.auth.shiro;
 
-import com.multi.auth.shiro.service.IUserService;
+import com.multi.auth.shiro.service.UserService;
 import com.multi.data.relationdb.Status;
 import com.multi.data.relationdb.user.MUser;
 import com.multi.test.BaseTest;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UserServiceTest extends BaseTest{
 
     @Autowired
-    IUserService service;
+    UserService service;
 
     @Test
     public void addNewUser(){
@@ -37,7 +37,8 @@ public class UserServiceTest extends BaseTest{
     @Test
     public void loginTest(){
        MUser user= service.login("ubeadq","test111111","1.1.1.1");
-        System.out.println(user.getId());
+       if(user!=null)
+           System.out.println(user.getId());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.multi.data.relationdb.role.dao;
 
+import com.multi.data.relationdb.ILogicalDel;
 import com.multi.data.relationdb.role.MRole;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -7,10 +8,8 @@ import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
-public interface MRoleMapper {
-    int deleteByPrimaryKey(Long id);
+public interface MRoleMapper extends ILogicalDel {
 
-    int insert(MRole record);
 
     int insertSelective(MRole record);
 
@@ -18,7 +17,6 @@ public interface MRoleMapper {
 
     int updateByPrimaryKeySelective(MRole record);
 
-    int updateByPrimaryKey(MRole record);
 
     MRole selectRoleUsersByRoleId(Long roleId);
 
@@ -30,9 +28,7 @@ public interface MRoleMapper {
 
     int batchInsertRoleResources(@Param("roleId")  Long roleId,@Param("creator")String creator,@Param("resourceIds") Long... resourceIds);
 
-    int batchUpdateRoleUser();
-
-    int batchInsertRoleResources();
+    List<MRole> roleExistCheck(MRole role);
 
 
 }

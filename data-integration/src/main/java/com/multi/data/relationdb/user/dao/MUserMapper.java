@@ -1,11 +1,13 @@
 package com.multi.data.relationdb.user.dao;
 
+import com.multi.data.relationdb.ILogicalDel;
 import com.multi.data.relationdb.user.MUser;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
-public interface MUserMapper {
+public interface MUserMapper extends ILogicalDel{
 
     int deleteById(Long id);
 
@@ -25,6 +27,8 @@ public interface MUserMapper {
 
     List<MUser>  selectAllUser(RowBounds rowBounds);
 
-    List<MUser> userExistCheck(MUser user);
+    List<MUser>  userExistCheck(MUser user);
+
+    int addUserRoles(@Param("userId") Long roleId, @Param("creator")String creator, @Param("roleIds")Long... userIds);
 
 }

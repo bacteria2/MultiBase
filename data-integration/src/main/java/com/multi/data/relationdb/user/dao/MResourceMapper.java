@@ -1,13 +1,14 @@
 package com.multi.data.relationdb.user.dao;
 
+import com.multi.data.relationdb.ILogicalDel;
 import com.multi.data.relationdb.user.MResource;
 import org.apache.ibatis.session.RowBounds;
 
 
 import java.util.List;
 
-public interface MResourceMapper {
-    int deleteByPrimaryKey(Long id);
+public interface MResourceMapper extends ILogicalDel {
+
 
     int insert(MResource record);
 

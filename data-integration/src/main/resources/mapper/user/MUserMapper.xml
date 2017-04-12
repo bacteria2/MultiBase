@@ -194,11 +194,14 @@
   </update>
 
   <!--用户名,手机,邮箱重复查询 逻辑删除-->
-  <select id="userExistCheck" parameterType="com.multi.data.relationdb.user.MUser" resultMap="BaseResultMap" resultType="ArrayList">
+  <select id="userExistCheck" parameterType="com.multi.data.relationdb.user.MUser" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> FROM multi_demo_user as user
     <where>
+      <if test="id != null">
+        id=#{id}
+      </if>
       <if test="mobile != null">
-        mobile=#{mobile}
+        or mobile=#{mobile}
       </if>
       <if test="username != null">
         or username=#{userName}
@@ -206,7 +209,18 @@
       <if test="email != null">
         or email=#{email}
       </if>
+      <if test="email == null and username == null and mobile==null">
+        mobile='' and username='' and email=''
+      </if>
     </where>
-    as user
   </select>
+
+  <insert id="addUserRoles">
+    INSERT into multi_demo_user_role
+    (role_id, user_id, creator, create_time, update_time,last_modifier) VALUES
+    <foreach collection="roleIds" item="roleId" separator=",">
+      (#{roleId},#{userId},#{creator},now(),now(),#{creator})
+    </foreach>
+  </insert>
+
 </mapper>
