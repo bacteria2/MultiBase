@@ -172,26 +172,42 @@
 
 
     <!--逻辑删除-->
-    <update id="deleteById" parameterType="java.lang.Long">
+    <update id="deleteById" parameterType="java.lang.Long" >
         UPDATE multi_demo_resource
         SET deleted = 1
         WHERE id = #{id}
     </update>
 
-    <select id="getResourceByUserId" parameterType="java.lang.Long">
-        SELECT res.resource
-        FROM (SELECT id
-              FROM multi_demo_user
-              WHERE id = #{id}) AS user
-            LEFT JOIN multi_demo_user_role AS user_role ON user.id = user_role.user_id
-            LEFT JOIN multi_demo_role_resource AS role_resource ON user_role.role_id = role_resource.role_id
-            LEFT JOIN multi_demo_resource AS res ON res.id = role_resource.resource_id
-        UNION
-        SELECT res.resource
-        FROM (SELECT id
-              FROM multi_demo_user_resource_permit
-              WHERE id = #{id})
+    <select id="getResourceByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT resource
+        FROM (SELECT
+                  res.resource,
+                  user_role.user_id,
+                  res.id AS resource_id
+              FROM (SELECT
+                        role_id,
+                        user_id
+                    FROM multi_demo_user_role
+                    WHERE user_id = #{id}) user_role
+                  JOIN multi_demo_role_resource AS role_resource ON user_role.role_id = role_resource.role_id
+                  JOIN multi_demo_resource AS res ON res.id = role_resource.resource_id
 
+              UNION
+
+              SELECT
+                  res.resource,
+                  user_resource.user_id,
+                  user_resource.resource_id
+              FROM (SELECT
+                        resource_id,
+                        user_id
+                    FROM multi_demo_user_resource_permit
+                    WHERE user_id = #{id}) user_resource
+                  JOIN multi_demo_resource AS res ON res.id = user_resource.resource_id
+             ) AS permit
+            LEFT JOIN multi_demo_user_resource_deny deny
+                ON permit.user_id = deny.user_id AND permit.resource_id = deny.resource_id
+        WHERE deny.id IS NULL
     </select>
 
 </mapper>

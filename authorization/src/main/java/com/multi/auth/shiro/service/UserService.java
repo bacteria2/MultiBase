@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.Date;
 import java.util.List;
 
@@ -78,11 +79,13 @@ public class UserService {
     }
 
 
-    public MUser login(String username,String password,String ip) {
+    public MUser login(String username,String password,String ip) throws UserPrincipalNotFoundException {
         Preconditions.checkNotNull(username,"id不能为空");
         Preconditions.checkNotNull(password,"id不能为空");
 
         MUser dataBaseUser=userMapper.selectUserByUserName(username);
+        if (dataBaseUser==null)
+            throw new UserPrincipalNotFoundException(String.format("未找到usernmame为%s的用户",username));
         String cypherText =EncryptionUtil.md5Password(username,password,dataBaseUser.getSalt());
         if(dataBaseUser.getPassword().equals(cypherText)){
             if(!(Status.DISABLED.statusEquals(dataBaseUser.getStatus())||Status.BANNED.statusEquals(dataBaseUser.getStatus()))){

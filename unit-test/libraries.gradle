@@ -1,7 +1,6 @@
 ext {
     slf4jVersion = '1.7.7'
     springVersion = '4.2.7.RELEASE'
-    logbackVersion = "1.1.7"
     guavaVersion = "20.0"
 
 }

@@ -1,4 +1,4 @@
-package com.multi.auth.shiro.conf;
+package com.multi.auth;
 
 import com.multi.auth.shiro.session.condition.RepoType;
 import com.multi.auth.shiro.session.condition.SessionRepoType;

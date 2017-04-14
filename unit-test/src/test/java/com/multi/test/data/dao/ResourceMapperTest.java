@@ -31,4 +31,9 @@ public class ResourceMapperTest  extends BaseTest{
         ; System.out.println(JSON.toJSONString(resourceMapper.selectResourcesByRoleId(1L)) );
         System.out.println(JSON.toJSONString(resourceMapper.selectResourcesByType(3)) );
     }
+
+    @Test
+    public void testResourceSearch(){
+        resourceMapper.getResourceByUserId(1L).forEach(System.out::println);
+    }
 }

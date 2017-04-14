@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 
 
 import java.util.List;
+import java.util.Set;
 
 public interface MRoleMapper extends ILogicalDel {
 
@@ -29,6 +30,8 @@ public interface MRoleMapper extends ILogicalDel {
     int batchInsertRoleResources(@Param("roleId")  Long roleId,@Param("creator")String creator,@Param("resourceIds") Long... resourceIds);
 
     List<MRole> roleExistCheck(MRole role);
+
+    Set<String> getRolesByUserId(Long id);
 
 
 }

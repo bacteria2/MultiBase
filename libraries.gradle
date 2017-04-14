@@ -1,25 +1,21 @@
 ext {
     slf4jVersion = '1.7.7'
     springVersion = '4.2.7.RELEASE'
-    logbackVersion="1.2.2"
-    guavaVersion="20.0"
+    logbackVersion="1.2.3"
+    guavaVersion="21.0"
 
 }
 
 dependencies {
     compile(
-
             "org.slf4j:jcl-over-slf4j:${slf4jVersion}",
             "com.google.guava:guava:${guavaVersion}",
             "ch.qos.logback:logback-classic:${logbackVersion}",
             "org.springframework:spring-webmvc:${springVersion}",
             "org.springframework:spring-aop:${springVersion}",
             "org.springframework:spring-jdbc:${springVersion}",
-            "com.google.guava:guava:21.0",
+            "com.google.guava:guava:${guavaVersion}",
             "com.alibaba:fastjson:1.2.30"
-
-
-
     )
  
 

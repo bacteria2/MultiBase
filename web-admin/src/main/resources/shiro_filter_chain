@@ -1,6 +1,8 @@
-/index/*=simple,login,permission
-/admin/*=simple,login,permission
-/test/*=simple,login,permission
-/asset/js/**=anon
-/asset/css/**=anon
-/*=simple,login
+/index/*=login,permission
+/admin/*=login,permission
+/test/*=login
+/open/*=anon
+/js/**=anon
+/css/**=anon
+/login/**=anon
+/**=login

@@ -152,4 +152,9 @@
     <update id="deleteById" parameterType="java.lang.Long">
         update multi_demo_role set deleted=1 where id=#{id}
     </update>
+
+    <select id="getRolesByUserId" resultType="java.lang.String">
+        select role.role from(select role_id from multi_demo_user_role where user_id=#{id}) as user_role
+        join multi_demo_role role on user_role.role_id=role.id
+    </select>
 </mapper>

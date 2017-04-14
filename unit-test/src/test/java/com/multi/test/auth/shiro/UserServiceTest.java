@@ -7,6 +7,8 @@ import com.multi.test.BaseTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+
 /**
  * @author shepard.xia
  * @date 2017年04月11日
@@ -35,7 +37,7 @@ public class UserServiceTest extends BaseTest{
     }
 
     @Test
-    public void loginTest(){
+    public void loginTest() throws UserPrincipalNotFoundException {
        MUser user= service.login("ubeadq","test111111","1.1.1.1");
        if(user!=null)
            System.out.println(user.getId());

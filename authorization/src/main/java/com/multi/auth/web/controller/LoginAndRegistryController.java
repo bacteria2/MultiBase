@@ -22,10 +22,9 @@ public class LoginAndRegistryController {
 
     @RequestMapping("submit")
     public ResponseModel<MUser> submitLogin(MUser user, Boolean rememberMe, HttpServletRequest request) {
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getEmail(), user.getPassword());
+        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
         token.setRememberMe(rememberMe);
         SecurityUtils.getSubject().login(token);
-
         return new ResponseModel<>("success", 1, user);
     }
 

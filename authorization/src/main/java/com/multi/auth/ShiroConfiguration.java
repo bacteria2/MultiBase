@@ -1,25 +1,19 @@
-package com.multi.auth.shiro.conf;
+package com.multi.auth;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import com.multi.auth.shiro.CustomSessionDAO;
 import com.multi.auth.shiro.filter.LoginFilter;
 import com.multi.auth.shiro.filter.PermissionFilter;
 import com.multi.auth.shiro.filter.RoleFilter;
 
-import com.multi.auth.shiro.listener.CustomSessionListener;
-
 
 import com.multi.auth.shiro.realm.ShiroRealm;
 
-import com.multi.auth.shiro.session.ISessionRepository;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SessionsSecurityManager;
 import org.apache.shiro.realm.Realm;
-import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
@@ -32,18 +26,15 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.Cookie;
-import org.apache.shiro.web.servlet.ShiroFilter;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.ClassPathResource;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 /**
  * @author shepard.xia
@@ -141,7 +132,7 @@ public class ShiroConfiguration {
 
 
     @Bean
-    public ShiroRealm simpleRealm(){
+    public Realm simpleRealm(){
         return new ShiroRealm();
     }
 

@@ -1,5 +1,7 @@
 package com.multi.test.auth.shiro;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import com.multi.data.relationdb.Status;
 import org.apache.shiro.codec.H64;
 import org.apache.shiro.codec.Hex;
@@ -8,6 +10,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.junit.Test;
 
 import java.security.Key;
+import java.util.Map;
 
 import static com.multi.auth.shiro.EncryptionUtil.*;
 
@@ -56,6 +59,17 @@ public class ShiroUtilTest {
         byte a=1;
 
         System.out.println( Status.NORMAL);
+
+    }
+
+    @Test
+    public void testJson(){
+        Map<String,String> map=Maps.newHashMap();
+        map.put("a","b");
+      String a=  JSON.toJSONString(map) ;
+        System.out.println(a);
+
+        System.out.println(JSON.toJSONString(a));
 
     }
 }

@@ -1,7 +1,8 @@
-/index/*=kickout,simple,login,permission
-/admin/*=kickout,simple,login,permission
-/test/*=kickout,simple,login,permission
+/index/*=login,permission
+/admin/*=login,permission
+/test/*=login
 /open/*=anon
 /js/**=anon
 /css/**=anon
-/**=simple
+/login/**=anon
+/**=login

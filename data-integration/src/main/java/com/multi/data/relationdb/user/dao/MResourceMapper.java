@@ -6,6 +6,7 @@ import org.apache.ibatis.session.RowBounds;
 
 
 import java.util.List;
+import java.util.Set;
 
 public interface MResourceMapper extends ILogicalDel {
 
@@ -29,4 +30,6 @@ public interface MResourceMapper extends ILogicalDel {
     List<MResource> selectResourcesByRoleId(Long id);
 
     int batchInsertResourceRole(Long ResourceId,Long... roleIDs);
+
+    Set<String> getResourceByUserId(Long id);
 }
